@@ -6,6 +6,8 @@ import com.ajie.res.navigator.Menu;
 import com.ajie.res.navigator.Navigator;
 
 /**
+ * 导航条的基础实现类
+ * 
  * @author niezhenjie
  */
 public class BaseNavigator implements Navigator {
