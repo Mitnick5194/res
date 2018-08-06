@@ -1,4 +1,4 @@
-package com.ajie.res.JMX;
+package com.ajie.utils.JMX;
 
 /**
  * 将对象注册到JMX管理

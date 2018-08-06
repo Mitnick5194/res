@@ -1,4 +1,4 @@
-package com.ajie.utils;
+package com.ajie.utils.JMX;
 
 import java.lang.management.ManagementFactory;
 
