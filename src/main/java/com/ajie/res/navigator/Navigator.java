@@ -2,6 +2,8 @@ package com.ajie.res.navigator;
 
 import java.util.List;
 
+import com.ajie.res.user.User;
+
 /**
  * <p>
  * 菜单导航条，对象托管给JMX管理，先从缓存中读取菜单，如果缓存中存在，
@@ -47,10 +49,10 @@ public interface Navigator {
 	String getTheme();
 
 	/**
-	 * 根据传进来的员工，生成员工对应的权限的导航 FIXME 使用User对象代替String
+	 * 根据传进来的员工，生成员工对应的权限的导航
 	 * 
 	 * @param user
 	 * @return
 	 */
-	Navigator genNavigator(String user);
+	Navigator genNavigator(User user);
 }

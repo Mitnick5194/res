@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ajie.res.navigator.Menu;
 import com.ajie.res.navigator.Navigator;
+import com.ajie.res.user.User;
 
 /**
  * 导航条的基础实现类
@@ -30,7 +31,7 @@ public class BaseNavigator implements Navigator {
 		return theme;
 	}
 
-	public Navigator genNavigator(String user) {
+	public Navigator genNavigator(User user) {
 		// TODO Auto-generated method stub
 		return null;
 	}

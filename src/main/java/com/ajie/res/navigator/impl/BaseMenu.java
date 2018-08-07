@@ -3,6 +3,7 @@ package com.ajie.res.navigator.impl;
 import java.util.List;
 
 import com.ajie.res.navigator.Menu;
+import com.ajie.res.user.Role;
 
 /**
  * @author niezhenjie
@@ -26,10 +27,11 @@ public class BaseMenu implements Menu {
 	private List<Menu> childs;
 
 	/** 菜单所属权限 */
-	private String role;
+	private Role role;
 
 	int state;
 
+	@Override
 	public String getId() {
 
 		return id;
@@ -55,16 +57,25 @@ public class BaseMenu implements Menu {
 		return childs;
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
-	}
-
-	public String toString() {
-		return "[id: " + id + " name: " + name + "]";
 	}
 
 	public boolean isParent() {
 		return null == parent;
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{id: ").append(id);
+		sb.append(" , name: ").append(name);
+		sb.append(" , url: ").append(url);
+		sb.append(" , role: ").append(role);
+		sb.append(" , parent: ").append(parent.toString());
+		sb.append(" , childs: ").append(childs.toString());
+		sb.append(" , state: ").append(state);
+		sb.append("}");
+		return sb.toString();
 	}
 
 }
