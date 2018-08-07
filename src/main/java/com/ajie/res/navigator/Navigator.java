@@ -53,6 +53,7 @@ public interface Navigator {
 	 * 
 	 * @param user
 	 * @return
+	 * @Deprecated 这个不合适 Navigator本来就是一个有状态的对象 所以不应该有该功能
 	 */
 	Navigator genNavigator(User user);
 }

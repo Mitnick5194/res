@@ -3,7 +3,9 @@ reason=$1
 git add .
 if test -z $reason
 then
-	git commit -m '脚本自动提交，无提交理由'
+	echo "提交失败"
+	echo "[usage] ./push.sh '提交理由' "
+	exit 2
 else
 	git commit -m $reason
 fi

@@ -16,4 +16,11 @@ public interface NavigatorService {
 	 * @return
 	 */
 	Navigator getNavigatorByUser(User user);
+
+	/**
+	 * 包含全部菜单的导航
+	 * 
+	 * @return
+	 */
+	Navigator getNavigator();
 }

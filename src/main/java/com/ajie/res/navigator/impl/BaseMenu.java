@@ -16,7 +16,7 @@ public class BaseMenu implements Menu {
 	/** 显示名字 */
 	private String name;
 
-	private String url;
+	private List<String> urls;
 
 	private String uri;
 
@@ -41,8 +41,8 @@ public class BaseMenu implements Menu {
 		return name;
 	}
 
-	public String getUrl() {
-		return url;
+	public List<String> getUrls() {
+		return urls;
 	}
 
 	public String getUri() {
@@ -69,7 +69,7 @@ public class BaseMenu implements Menu {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{id: ").append(id);
 		sb.append(" , name: ").append(name);
-		sb.append(" , url: ").append(url);
+		//sb.append(" , url: ").append(url);
 		sb.append(" , role: ").append(role);
 		sb.append(" , parent: ").append(parent.toString());
 		sb.append(" , childs: ").append(childs.toString());

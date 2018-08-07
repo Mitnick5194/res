@@ -11,4 +11,8 @@
 	http://www.springframework.org/schema/aop
 	http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
+	<bean id="navigatorService" class="com.ajie.res.navigator.impl.NavigatorServiceImpl">
+		<property name="xmlFile" value="navigator.xml" />
+	</bean>
+
 </beans>
