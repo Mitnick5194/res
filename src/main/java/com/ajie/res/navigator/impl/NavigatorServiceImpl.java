@@ -12,7 +12,7 @@ public class NavigatorServiceImpl implements NavigatorService {
 	@Override
 	public Navigator getNavigatorByUser(User user) {
 		// TODO Auto-generated method stub
-		return null;
+		return null; 
 	}
 
 }
