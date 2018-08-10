@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
+<%
+	out.println(System.getProperty("user.dir" , ""));
+%>
  <h1>如果你看到这个页面 证明tomcat已经跑起来了</h1>
 </body>
 </html>
