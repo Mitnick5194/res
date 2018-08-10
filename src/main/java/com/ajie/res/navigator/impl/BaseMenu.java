@@ -11,12 +11,12 @@ import com.ajie.res.user.Role;
 public class BaseMenu implements Menu {
 
 	/** 唯一id */
-	private String id;
+	private int id;
 
 	/** 显示名字 */
 	private String name;
 
-	private List<String> urls;
+	private List<String> uris;
 
 	private String uri;
 
@@ -31,8 +31,14 @@ public class BaseMenu implements Menu {
 
 	int state;
 
+	public BaseMenu(int id, String name, List<String> uris) {
+		this.id = id;
+		this.name = name;
+		this.uris = uris;
+	}
+
 	@Override
-	public String getId() {
+	public int getId() {
 
 		return id;
 	}
@@ -42,7 +48,7 @@ public class BaseMenu implements Menu {
 	}
 
 	public List<String> getUrls() {
-		return urls;
+		return uris;
 	}
 
 	public String getUri() {
@@ -69,7 +75,7 @@ public class BaseMenu implements Menu {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{id: ").append(id);
 		sb.append(" , name: ").append(name);
-		//sb.append(" , url: ").append(url);
+		// sb.append(" , url: ").append(url);
 		sb.append(" , role: ").append(role);
 		sb.append(" , parent: ").append(parent.toString());
 		sb.append(" , childs: ").append(childs.toString());

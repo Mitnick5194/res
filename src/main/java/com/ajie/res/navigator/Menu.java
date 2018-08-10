@@ -22,7 +22,7 @@ public interface Menu {
 	 * 
 	 * @return
 	 */
-	String getId();
+	int getId();
 
 	/**
 	 * 菜单的显示名称

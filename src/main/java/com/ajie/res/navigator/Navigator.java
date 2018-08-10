@@ -56,4 +56,18 @@ public interface Navigator {
 	 * @Deprecated 这个不合适 Navigator本来就是一个有状态的对象 所以不应该有该功能
 	 */
 	Navigator genNavigator(User user);
+
+	/**
+	 * 设置导航条的菜单
+	 * 
+	 * @param menus
+	 */
+	void setMenus(List<Menu> menus);
+
+	/**
+	 * 向导航条添加一个菜单
+	 * 
+	 * @param menu
+	 */
+	void addMenu(Menu menu);
 }

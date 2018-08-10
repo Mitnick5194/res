@@ -117,7 +117,7 @@ public interface User {
 	 * 
 	 * @return
 	 */
-	List<Role> getRoles();
+	List<Integer> getRoles();
 
 	/**
 	 * 用户是否有指定的权限
@@ -125,7 +125,7 @@ public interface User {
 	 * @param role
 	 * @return
 	 */
-	boolean isContainRole(Role role);
+	boolean isContainRole(int roleId);
 
 	/**
 	 * 是否为管理员
@@ -167,14 +167,14 @@ public interface User {
 	 * 
 	 * @param role
 	 */
-	void setRoles(List<Role> role);
+	void setRoles(List<Integer> role);
 
 	/**
 	 * 增加权限
 	 * 
 	 * @param role
 	 */
-	void addRole(Role role);
+	void addRole(int roleId);
 
 	/**
 	 * 设置手机号

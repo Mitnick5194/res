@@ -1,10 +1,9 @@
 package com.ajie.res.user.simple;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.ajie.res.user.Role;
 import com.ajie.res.user.User;
 import com.ajie.res.user.enums.SexEnum;
 import com.ajie.res.user.exception.UserException;
@@ -71,9 +70,9 @@ public class SimpleUser implements User {
 	private String loginToken;
 
 	/**
-	 * 用户拥有的权限
+	 * 用户拥有的权限 id集
 	 */
-	private List<Role> roles;
+	private List<Integer> roles;
 
 	/**
 	 * 标记
@@ -95,7 +94,7 @@ public class SimpleUser implements User {
 		this.email = email;
 		this.password = password;
 		createTime = new Date();
-		roles = new ArrayList<Role>(10);
+		roles = Collections.emptyList();
 	}
 
 	@Override
@@ -211,28 +210,22 @@ public class SimpleUser implements User {
 	}
 
 	@Override
-	public List<Role> getRoles() {
+	public List<Integer> getRoles() {
 		return roles;
 	}
 
 	@Override
-	public void setRoles(List<Role> role) {
+	public void setRoles(List<Integer> role) {
 		this.roles = role;
 	}
 
 	@Override
-	public void addRole(Role role) {
-		if (null == role) {
-			return;
-		}
-		roles.add(role);
+	public void addRole(int roleId) {
+		roles.add(roleId);
 	}
 
 	@Override
-	public boolean isContainRole(Role role) {
-		if (null == role) {
-			return false;
-		}
+	public boolean isContainRole(int role) {
 		return roles.contains(role);
 	}
 

@@ -23,6 +23,10 @@ public class BaseNavigator implements Navigator {
 		this.menus = menus;
 	}
 
+	public BaseNavigator() {
+
+	}
+
 	public List<Menu> getMenus() {
 		return menus;
 	}
@@ -34,6 +38,19 @@ public class BaseNavigator implements Navigator {
 	public Navigator genNavigator(User user) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setMenus(List<Menu> menus) {
+		this.menus = menus;
+	}
+
+	@Override
+	public void addMenu(Menu menu) {
+		if (null == menu) {
+			return;
+		}
+		menus.add(menu);
 	}
 
 }
