@@ -8,5 +8,7 @@
 </head>
 <body>
 	<span>${info }</span>
+	<br><br><br><br>
+	<span>${users }</span>
 </body>
 </html>

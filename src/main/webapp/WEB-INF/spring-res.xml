@@ -15,4 +15,9 @@
 		<property name="xmlFile" value="navigator.xml" />
 	</bean>
 
+	<bean id="userService" class="com.ajie.res.user.impl.UserServiceImpl">
+		<property name="navigatorService" ref="navigatorService" />
+		<property name="userData" value="users.xml" />
+	</bean>
+
 </beans>

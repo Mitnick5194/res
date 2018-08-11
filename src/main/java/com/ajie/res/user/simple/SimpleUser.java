@@ -105,6 +105,28 @@ public class SimpleUser implements User {
 		roles = Collections.emptyList();
 	}
 
+	public SimpleUser(String id, String name, String email, String password)
+			throws UserException {
+		if (null == id) {
+			throw new UserException("id不能为空");
+		}
+		if (null == name) {
+			throw new UserException("用户名不能为空");
+		}
+		if (null == email) {
+			throw new UserException("邮箱不能为空");
+		}
+		if (null == password) {
+			throw new UserException("密码不能为空");
+		}
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		createTime = new Date();
+		roles = Collections.emptyList();
+	}
+
 	public SimpleUser(String name, String email, String password,
 			String synopsis, int sex, String phone) throws UserException {
 		this(name, email, password);

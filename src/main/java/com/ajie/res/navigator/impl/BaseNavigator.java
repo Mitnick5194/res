@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ajie.res.navigator.Menu;
 import com.ajie.res.navigator.Navigator;
+import com.ajie.res.user.Role;
 import com.ajie.res.user.User;
 
 /**
@@ -16,11 +17,19 @@ public class BaseNavigator implements Navigator {
 	/** 导航条包含的菜单 */
 	private List<Menu> menus;
 
+	/** 导航对应的所有权限 */
+	private List<Role> roles;
+
 	/** 导航主题 */
 	private String theme;
 
 	public BaseNavigator(List<Menu> menus) {
 		this.menus = menus;
+	}
+
+	public BaseNavigator(List<Menu> menus, List<Role> roles) {
+		this.menus = menus;
+		this.roles = roles;
 	}
 
 	public BaseNavigator() {
@@ -51,6 +60,11 @@ public class BaseNavigator implements Navigator {
 			return;
 		}
 		menus.add(menu);
+	}
+
+	@Override
+	public List<Role> getRoles() {
+		return roles;
 	}
 
 }

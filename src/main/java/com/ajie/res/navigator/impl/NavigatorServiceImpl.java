@@ -18,7 +18,9 @@ import org.dom4j.io.SAXReader;
 import com.ajie.res.navigator.Menu;
 import com.ajie.res.navigator.Navigator;
 import com.ajie.res.navigator.NavigatorService;
+import com.ajie.res.user.Role;
 import com.ajie.res.user.User;
+import com.ajie.res.user.simple.SimpleRole;
 
 /**
  * @author niezhenjie
@@ -27,10 +29,10 @@ public class NavigatorServiceImpl implements NavigatorService {
 	private static final Log log = LogFactory
 			.getLog(NavigatorServiceImpl.class);
 	private Navigator navigator;
-	
+
 	private Object lock = new Object();
 
-	public  void setXmlFile(String xmlFile) throws IOException {
+	public void setXmlFile(String xmlFile) throws IOException {
 		synchronized (lock) {
 			load(xmlFile);
 		}
@@ -120,7 +122,8 @@ public class NavigatorServiceImpl implements NavigatorService {
 		SAXReader reader = new SAXReader();
 		try {
 			List<Menu> navMenu = new ArrayList<Menu>();
-			Navigator navigator = new BaseNavigator(navMenu);
+			List<Role> roles = new ArrayList<Role>();
+			Navigator navigator = new BaseNavigator(navMenu, roles);
 			Document doc = reader.read(in);
 			Element root = doc.getRootElement();
 			Element menus = root.element("menus");
@@ -147,6 +150,9 @@ public class NavigatorServiceImpl implements NavigatorService {
 				for (Element uri : uriEle) {
 					uris.add(uri.getTextTrim());
 				}
+				Role role = new SimpleRole();
+				role.genRole(m);
+				roles.add(role);
 				navMenu.add(m);
 			}
 			this.navigator = navigator;

@@ -2,6 +2,7 @@ package com.ajie.res.navigator;
 
 import java.util.List;
 
+import com.ajie.res.user.Role;
 import com.ajie.res.user.User;
 
 /**
@@ -70,4 +71,11 @@ public interface Navigator {
 	 * @param menu
 	 */
 	void addMenu(Menu menu);
+
+	/**
+	 * 导航条包含的权限
+	 * 
+	 * @return
+	 */
+	List<Role> getRoles();
 }

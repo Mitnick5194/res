@@ -23,6 +23,9 @@ public class SimpleRole implements Role {
 		uris = Collections.emptyList();
 	}
 
+	public SimpleRole() {
+	}
+
 	public void setUris(List<String> uris) {
 		this.uris = uris;
 	}
