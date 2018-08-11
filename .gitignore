@@ -1,7 +1,4 @@
 /target/
-.classpath
 *.swp
-.project
-.settings
 *.sh
 
