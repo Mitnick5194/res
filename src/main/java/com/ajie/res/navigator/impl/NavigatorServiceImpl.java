@@ -27,9 +27,13 @@ public class NavigatorServiceImpl implements NavigatorService {
 	private static final Log log = LogFactory
 			.getLog(NavigatorServiceImpl.class);
 	private Navigator navigator;
+	
+	private Object lock = new Object();
 
-	public void setXmlFile(String xmlFile) throws IOException {
-		load(xmlFile);
+	public  void setXmlFile(String xmlFile) throws IOException {
+		synchronized (lock) {
+			load(xmlFile);
+		}
 	}
 
 	@Override

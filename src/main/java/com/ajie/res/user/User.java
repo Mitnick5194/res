@@ -197,4 +197,34 @@ public interface User {
 	 *            操作者，该操作这必须是管理员或更高权限
 	 */
 	void setAdmin(User operator);
+
+	/**
+	 * 用户是否有指定权限
+	 * 
+	 * @param role
+	 * @return
+	 */
+	boolean checkRole(Role role);
+
+	/**
+	 * 用户是否有指定权限
+	 * 
+	 * @param role
+	 * @return
+	 */
+	boolean checkRole(int roleId);
+
+	/**
+	 * 修改头像路径
+	 * 
+	 * @param header
+	 */
+	void setHeader(String header);
+
+	/**
+	 * 获取头像路径
+	 * 
+	 * @return
+	 */
+	String getHeader();
 }

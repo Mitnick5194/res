@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.ajie.res.user.Role;
 import com.ajie.res.user.User;
 import com.ajie.res.user.enums.SexEnum;
 import com.ajie.res.user.exception.UserException;
@@ -74,10 +75,17 @@ public class SimpleUser implements User {
 	 */
 	private List<Integer> roles;
 
+	/** 头像路径 */
+	private String header;
+
 	/**
 	 * 标记
 	 */
 	private int mark;
+
+	public SimpleUser() {
+
+	}
 
 	public SimpleUser(String name, String email, String password)
 			throws UserException {
@@ -95,6 +103,14 @@ public class SimpleUser implements User {
 		this.password = password;
 		createTime = new Date();
 		roles = Collections.emptyList();
+	}
+
+	public SimpleUser(String name, String email, String password,
+			String synopsis, int sex, String phone) throws UserException {
+		this(name, email, password);
+		this.synopsis = synopsis;
+		this.sex = sex;
+		this.phone = phone;
 	}
 
 	@Override
@@ -272,5 +288,39 @@ public class SimpleUser implements User {
 		sb.append("}");
 		return sb.toString();
 
+	}
+
+	@Override
+	public boolean checkRole(Role role) {
+		if (null == role) {
+			return false;
+		}
+		List<Integer> r = getRoles();
+		if (r.isEmpty()) {
+			return false;
+		}
+		if (r.contains(role.getId())) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean checkRole(int roleId) {
+		List<Integer> role = getRoles();
+		if (role.isEmpty()) {
+			return false;
+		}
+		return role.contains(roleId);
+	}
+
+	@Override
+	public void setHeader(String header) {
+		this.header = header;
+	}
+
+	@Override
+	public String getHeader() {
+		return header;
 	}
 }
