@@ -19,6 +19,15 @@ public interface User {
 	/** 管理员 */
 	public static final int SU_ROLE = 0x10000;
 
+	/** 保存用户的session的key */
+	public static final String USER_SESSION_KEY = "ussk";
+
+	/** 保存用户账号的session的key */
+	public static final String USER_SESSION_ACCOUNT = "ussk-cct";
+
+	/** 保存用户密码的session的key */
+	public static final String USER_SESSION_PASSWORD = "ussk-pss";
+
 	/**
 	 * 唯一id
 	 * 

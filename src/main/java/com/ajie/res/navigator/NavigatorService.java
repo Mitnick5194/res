@@ -23,4 +23,12 @@ public interface NavigatorService {
 	 * @return
 	 */
 	Navigator getNavigator();
+
+	/**
+	 * 根据uri返回所属菜单
+	 * 
+	 * @param uri
+	 * @return
+	 */
+	Menu getMenuByUri(String uri);
 }

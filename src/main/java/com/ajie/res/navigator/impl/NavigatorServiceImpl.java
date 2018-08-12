@@ -41,7 +41,6 @@ public class NavigatorServiceImpl implements NavigatorService {
 	@Override
 	public Navigator getNavigatorByUser(User user) {
 		List<Integer> roles = user.getRoles();
-
 		List<Menu> menus = new ArrayList<Menu>();
 		for (int role : roles) { // 现在的权限id和菜单id是一样的
 			Menu menu = getMenuById(role);
@@ -159,5 +158,20 @@ public class NavigatorServiceImpl implements NavigatorService {
 		} catch (DocumentException e) {
 			log.warn("解析导航配置失败" + e);
 		}
+	}
+
+	@Override
+	public Menu getMenuByUri(String uri) {
+		if (null == uri) {
+			return null;
+		}
+		List<Menu> menus = navigator.getMenus();
+		for (Menu menu : menus) {
+			String menuUri = menu.getUri();
+			if (menuUri.equals(uri)) {
+				return menu;
+			}
+		}
+		return null;
 	}
 }

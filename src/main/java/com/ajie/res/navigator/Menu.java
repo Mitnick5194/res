@@ -72,5 +72,6 @@ public interface Menu {
 	 * @return
 	 */
 	Role getRole();
+	
 
 }
