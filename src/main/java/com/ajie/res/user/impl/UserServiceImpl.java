@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -27,6 +29,7 @@ import com.ajie.res.user.exception.UserException;
 import com.ajie.res.user.simple.SimpleUser;
 import com.ajie.utils.cache.Cache;
 import com.ajie.utils.cache.MapCache;
+import com.ajie.utils.common.Various;
 
 public class UserServiceImpl implements UserService {
 
@@ -163,16 +166,19 @@ public class UserServiceImpl implements UserService {
 			}
 			this.users = userList;
 
-		} catch (UserException e1) {
-			log.warn("构造User对象出错" + e1);
-		} catch (IllegalAccessException e1) {
-			log.error("反射调用setter出错setter:" + setter + " , " + e1);
-		} catch (IllegalArgumentException e1) {
-			log.error("反射调用setter出错 setter: " + setter + " " + e1);
-		} catch (InvocationTargetException e1) {
-			log.error("反射调用setter出错 setter:" + setter + " " + e1);
-		} catch (DocumentException e1) {
-			log.error("user.xml配置文件解析失败" + e1);
+		} catch (UserException ex) {
+			log.warn("构造User对象出错" + Various.printTrace(ex));
+		} catch (IllegalAccessException ex) {
+			log.error("反射调用setter出错setter:" + setter + " , "
+					+ Various.printTrace(ex));
+		} catch (IllegalArgumentException ex) {
+			log.error("反射调用setter出错 setter: " + setter + " "
+					+ Various.printTrace(ex));
+		} catch (InvocationTargetException ex) {
+			log.error("反射调用setter出错 setter:" + setter + " "
+					+ Various.printTrace(ex));
+		} catch (DocumentException ex) {
+			log.error("Document解析失败\r\n " + Various.printTrace(ex));
 		}
 	}
 
@@ -201,9 +207,9 @@ public class UserServiceImpl implements UserService {
 			Method method = cla.getMethod(methodName, paramType);
 			return method;
 		} catch (NoSuchMethodException e) {
-			log.error("setter方法不存在:" + methodName);
+			log.error("setter方法不存在:" + methodName + " " + Various.printTrace(e));
 		} catch (SecurityException e) {
-			log.error("setter方法不存在:" + methodName);
+			log.error("setter方法不存在:" + methodName + " " + Various.printTrace(e));
 		}
 		return null;
 	}
