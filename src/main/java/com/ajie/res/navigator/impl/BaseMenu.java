@@ -47,7 +47,7 @@ public class BaseMenu implements Menu {
 		return name;
 	}
 
-	public List<String> getUrls() {
+	public List<String> getUris() {
 		return uris;
 	}
 

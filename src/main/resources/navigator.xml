@@ -19,5 +19,11 @@
 		<menu id="0x04" name="服务器监控">
 			<uri>/res/serviceInfo.do</uri>
 		</menu>
+		<menu id="0x05" name="导航">
+			<uri>/res/nav.do</uri>
+		</menu>
+		<menu id="0x6" name="登录">
+			<uri>/res/login.do</uri>
+		</menu>
 	</menus>
 </navigator>

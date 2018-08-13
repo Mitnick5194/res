@@ -43,7 +43,7 @@ public class RequestFilter implements Filter {
 	protected String encoding;
 
 	/** 登录url */
-	protected String loginUrl = "/login/ref=";
+	protected String loginUrl;
 
 	public List<String> getIgnoreUri() {
 		return ignoreUri;
@@ -106,9 +106,11 @@ public class RequestFilter implements Filter {
 		if (null == user) {
 			// 再尝试从cookie中
 			Cookie[] cookies = req.getCookies();
-			for (Cookie cookie : cookies) {
-				if (User.USER_COOKIE_SESSION.equals(cookie.getName())) {
-					user = (User) session.getAttribute(cookie.getName());
+			if (null != cookies) {
+				for (Cookie cookie : cookies) {
+					if (User.USER_COOKIE_SESSION.equals(cookie.getName())) {
+						user = (User) session.getAttribute(cookie.getName());
+					}
 				}
 			}
 		}
@@ -156,10 +158,20 @@ public class RequestFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		String query = req.getQueryString();
 		String uri = req.getRequestURI();
-		if (null != uri && uri.length() > 0) {
+		if (null != uri && uri.length() > 0 && null != query
+				&& query.length() > 0) {
 			uri += "%3f" + URLEncoder.encode(query, "utf-8");
 		}
 		((HttpServletResponse) response).sendRedirect(loginUrl + uri);
 
 	}
+
+	public String getLoginUrl() {
+		return loginUrl;
+	}
+
+	public void setLoginUrl(String loginUrl) {
+		this.loginUrl = loginUrl;
+	}
+
 }

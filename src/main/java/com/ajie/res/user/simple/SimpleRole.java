@@ -53,7 +53,7 @@ public class SimpleRole implements Role {
 		this.menu = menu;
 		id = menu.getId();
 		name = menu.getName();
-		uris = menu.getUrls();
+		uris = menu.getUris();
 		return this;
 	}
 

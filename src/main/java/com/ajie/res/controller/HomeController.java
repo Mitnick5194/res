@@ -59,10 +59,23 @@ public class HomeController {
 			JSONObject obj = new JSONObject();
 			obj.put("id", m.getId());
 			obj.put("name", m.getName());
-			obj.put("uris", m.getUrls());
+			obj.put("uris", m.getUris());
 			arr.put(obj);
 		}
 		request.setAttribute("info", arr.toString());
 		return PREFIX + "header";
+	}
+
+	@RequestMapping
+	String login(HttpServletRequest request, HttpServletResponse response) {
+		String name = request.getParameter("name");
+		String password = request.getParameter("password");
+		String op = request.getParameter("op");
+		if (null == op) {
+			return PREFIX + "login";
+		}
+		request.setAttribute("info", "登录成功");
+
+		return PREFIX + "login";
 	}
 }

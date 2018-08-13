@@ -36,7 +36,7 @@ public interface Menu {
 	 * 
 	 * @return
 	 */
-	List<String> getUrls();
+	List<String> getUris();
 
 	/**
 	 * 菜单的uri

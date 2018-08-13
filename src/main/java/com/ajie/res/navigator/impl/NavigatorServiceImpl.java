@@ -167,9 +167,11 @@ public class NavigatorServiceImpl implements NavigatorService {
 		}
 		List<Menu> menus = navigator.getMenus();
 		for (Menu menu : menus) {
-			String menuUri = menu.getUri();
-			if (menuUri.equals(uri)) {
-				return menu;
+			List<String> uris = menu.getUris();
+			for (String ur : uris) {
+				if(ur.equals(uri)){
+					return menu;
+				}
 			}
 		}
 		return null;

@@ -11,6 +11,21 @@
 	http://www.springframework.org/schema/aop
 	http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
+
+	<bean id="requestFilter" class="com.ajie.web.RequestFilter">
+		<property name="navigatorService" ref="navigatorService" />
+		<property name="userService" ref="userService" />
+		<property name="ignoreUri">
+			<list>
+				<value>/res/index.do</value>
+				<value>/res/login.do</value>
+			</list>
+		</property>
+		<property name="encoding" value="utf-8" />
+		<property name="loginUrl" value="/res/login.do?ref=" />
+
+	</bean>
+
 	<bean id="navigatorService" class="com.ajie.res.navigator.impl.NavigatorServiceImpl">
 		<property name="xmlFile" value="navigator.xml" />
 	</bean>
