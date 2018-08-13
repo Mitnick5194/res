@@ -28,6 +28,9 @@ public interface User {
 	/** 保存用户密码的session的key */
 	public static final String USER_SESSION_PASSWORD = "ussk-pss";
 
+	/** 回话标识 */
+	public static final String USER_COOKIE_SESSION = "uooss";
+
 	/**
 	 * 唯一id
 	 * 

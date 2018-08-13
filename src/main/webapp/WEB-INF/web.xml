@@ -32,6 +32,7 @@
 	<servlet-mapping>
 		<servlet-name>springMVC</servlet-name>
 		<url-pattern>*.do</url-pattern>
+		<url-pattern>*.admin</url-pattern>
 	</servlet-mapping>
 
 	<!-- 字符过滤器 防止乱码 -->

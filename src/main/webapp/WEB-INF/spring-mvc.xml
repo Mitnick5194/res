@@ -33,6 +33,7 @@
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<value>
+				/*.admin = homeController
 				/*.do = homeController
 			</value>
 		</property>
