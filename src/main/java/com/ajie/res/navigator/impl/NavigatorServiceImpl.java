@@ -8,12 +8,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ajie.res.navigator.Menu;
 import com.ajie.res.navigator.Navigator;
@@ -26,11 +26,11 @@ import com.ajie.res.user.simple.SimpleRole;
  * @author niezhenjie
  */
 public class NavigatorServiceImpl implements NavigatorService {
-	private static final Log log = LogFactory
-			.getLog(NavigatorServiceImpl.class);
-	private Navigator navigator;
+	private static final Logger logger = LoggerFactory
+			.getLogger(NavigatorServiceImpl.class);
+	protected Navigator navigator;
 
-	private Object lock = new Object();
+	protected Object lock = new Object();
 
 	public void setXmlFile(String xmlFile) throws IOException {
 		synchronized (lock) {
@@ -72,7 +72,7 @@ public class NavigatorServiceImpl implements NavigatorService {
 		return navigator;
 	}
 
-	private void load(String xmlFile) throws IOException {
+	protected void load(String xmlFile) throws IOException {
 		if (null == xmlFile) {
 			return;
 		}
@@ -117,7 +117,7 @@ public class NavigatorServiceImpl implements NavigatorService {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void parse(InputStream in) {
+	protected void parse(InputStream in) {
 		SAXReader reader = new SAXReader();
 		try {
 			List<Menu> navMenu = new ArrayList<Menu>();
@@ -133,13 +133,13 @@ public class NavigatorServiceImpl implements NavigatorService {
 				if (null != idStr) {
 					try {
 						if (idStr.length() < 3 || !idStr.startsWith("0x")) {
-							log.warn("导航条的菜单id无效，id必须是0x开头的16进制 =>" + idStr);
+							logger.warn("导航条的菜单id无效，id必须是0x开头的16进制 =>" + idStr);
 							return;
 						}
 						idStr = idStr.substring(2, idStr.length());
 						id = Integer.valueOf(idStr, 16);
 					} catch (NumberFormatException e2) {
-						log.warn("导航条的菜单id无效 =>" + idStr);
+						logger.warn("导航条的菜单id无效 =>" + idStr);
 					}
 				}
 				String name = e.attributeValue("name");
@@ -151,12 +151,14 @@ public class NavigatorServiceImpl implements NavigatorService {
 				}
 				Role role = new SimpleRole();
 				role.genRole(m);
+				m.setRole(role);
 				roles.add(role);
 				navMenu.add(m);
 			}
+			logger.info("已从配置文件中初始化导航条");
 			this.navigator = navigator;
 		} catch (DocumentException e) {
-			log.warn("解析导航配置失败" + e);
+			logger.warn("解析导航配置失败" + e);
 		}
 	}
 
@@ -169,7 +171,7 @@ public class NavigatorServiceImpl implements NavigatorService {
 		for (Menu menu : menus) {
 			List<String> uris = menu.getUris();
 			for (String ur : uris) {
-				if(ur.equals(uri)){
+				if (ur.equals(uri)) {
 					return menu;
 				}
 			}

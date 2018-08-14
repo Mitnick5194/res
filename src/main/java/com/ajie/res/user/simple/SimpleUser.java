@@ -17,71 +17,70 @@ public class SimpleUser implements User {
 	/**
 	 * 唯一id
 	 */
-	private String id;
+	protected String id;
 
 	/**
 	 * 用户名
 	 */
-	private String name;
+	protected String name;
 
 	/**
 	 * 用户昵称
 	 */
-	private String nickName;
+	protected String nickName;
 
 	/**
 	 * 登录密码（MD5加密）
 	 */
-	@SuppressWarnings("unused")
-	private String password;
+	protected String password;
 
 	/**
 	 * 简介
 	 */
-	private String synopsis;
+	protected String synopsis;
 
 	/**
 	 * 性别
 	 */
-	private int sex;
+	protected int sex;
 
 	/**
 	 * 手机号
 	 */
-	private String phone;
+	protected String phone;
 
 	/**
 	 * 邮箱
 	 */
-	private String email;
+	protected String email;
 
 	/**
 	 * 创建时间
 	 */
-	private Date createTime;
+	protected Date createTime;
 
 	/**
 	 * 最后活跃时间
 	 */
-	private Date lastActive;
+	protected Date lastActive;
 
 	/**
 	 * 登录token
 	 */
-	private String loginToken;
+	protected String loginToken;
 
 	/**
 	 * 用户拥有的权限 id集
 	 */
-	private List<Integer> roles;
+	protected List<Integer> roles;
 
 	/** 头像路径 */
-	private String header;
+	protected String header;
 
 	/**
 	 * 标记
 	 */
-	private int mark;
+	protected int mark;
 
 	public SimpleUser() {
 
@@ -344,5 +343,13 @@ public class SimpleUser implements User {
 	@Override
 	public String getHeader() {
 		return header;
+	}
+
+	@Override
+	public boolean vertifyLogin(String password) {
+		if (null == password || password.length() < 1) {
+			return false;
+		}
+		return password.equals(this.password);
 	}
 }

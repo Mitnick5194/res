@@ -13,28 +13,31 @@
 	<c:if test="${not empty info }">
 		<h1>${info }</h1>
 	</c:if>
-	用户名：<input type="text" name="name" id="iName" /><br>
-	密码：<input type="password" name="password" id="iPassword"/><br>
-	<button id="iLogin">登陆</button>
+	<form id="iForm" action="login.do"  method="post" onsubmit="return check()">
+		<input type="hidden" value="${ref }" name="ref"/>
+		<input type="hidden" value="login" name="op"/>
+		用户名：<input type="text" name="name" id="iName" /><br>
+		密码：<input type="password" name="password" id="iPassword"/><br>
+		<input type="submit" id="iLogin" value="登录"/>
+	</form>
 	
 	<script type="text/javascript">
-	
-	iLogin.onclick = function(){
+	function check(){
 		var name = iName.value;
 		var password = iPassword.value;
 		if(!name){
 			alert("请输入用户名");
-			return;
+			return false;
 		}
 		if(!password){
 			alert("请输入密码");
-			return;
+			return false;
 		}
-		
-		location.href = "login.do?name="+name+"&passowrd="+password+"&op=login";
-		
-		
 	}
+/* 	iLogin.onclick = function(){
+		/* location.href = "login.do?name="+name+"&password="+password+"&op=login"; */
+	/*	iForm.submit();
+	} */
 		
 	</script>
 </body>

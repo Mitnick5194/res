@@ -239,4 +239,12 @@ public interface User {
 	 * @return
 	 */
 	String getHeader();
+
+	/**
+	 * 验证登录用户密码
+	 * 
+	 * @return
+	 */
+	boolean vertifyLogin(String password);
+	
 }

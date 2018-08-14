@@ -15,13 +15,13 @@ import com.ajie.res.user.User;
 public class BaseNavigator implements Navigator {
 
 	/** 导航条包含的菜单 */
-	private List<Menu> menus;
+	protected List<Menu> menus;
 
 	/** 导航对应的所有权限 */
-	private List<Role> roles;
+	protected List<Role> roles;
 
 	/** 导航主题 */
-	private String theme;
+	protected String theme;
 
 	public BaseNavigator(List<Menu> menus) {
 		this.menus = menus;

@@ -2,6 +2,7 @@ package com.ajie.utils.common;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Random;
 
 /**
  * 各式各样的工具集合
@@ -41,4 +42,34 @@ public class Various {
 		}
 	}
 
+	/**
+	 * 生成随机数 有当前毫秒数加上三位随机数
+	 * 
+	 * @return
+	 */
+	public static String genUniqueId() {
+		long currentTimeMillis = System.currentTimeMillis();
+		Random random = new Random();
+		int randomInt = random.nextInt(999);
+		StringBuilder sb = new StringBuilder();
+		sb.append(currentTimeMillis);
+		sb.append(randomInt);
+		String str = sb.toString();
+		int len = str.length();
+		if (len < 16) {
+			int lack = 16 - len;
+			for (int i = 0; i < lack; i++) {
+				sb.append(random.nextInt(9));
+			}
+		} else if (len > 16) {
+			str = str.substring(0, 16);
+		}
+		return str;
+	}
+
+	public static void main(String[] args) {
+		String id = Various.genUniqueId();
+		System.out.println(id);
+		System.out.println(id.length());
+	}
 }

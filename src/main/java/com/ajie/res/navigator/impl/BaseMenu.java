@@ -11,23 +11,23 @@ import com.ajie.res.user.Role;
 public class BaseMenu implements Menu {
 
 	/** 唯一id */
-	private int id;
+	protected int id;
 
 	/** 显示名字 */
-	private String name;
+	protected String name;
 
-	private List<String> uris;
+	protected List<String> uris;
 
-	private String uri;
+	protected String uri;
 
 	/** 菜单所属的父菜单 */
-	private Menu parent;
+	protected Menu parent;
 
 	/** 菜单包含的子菜单 */
-	private List<Menu> childs;
+	protected List<Menu> childs;
 
 	/** 菜单所属权限 */
-	private Role role;
+	protected Role role;
 
 	int state;
 
@@ -35,6 +35,11 @@ public class BaseMenu implements Menu {
 		this.id = id;
 		this.name = name;
 		this.uris = uris;
+	}
+
+	@Override
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	@Override

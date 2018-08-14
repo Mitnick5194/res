@@ -12,10 +12,18 @@ import com.ajie.res.user.Role;
  * @author niezhenjie
  */
 public class SimpleRole implements Role {
-	private int id;
-	private String name;
-	private List<String> uris;
-	private Menu menu;
+
+	/** 唯一id */
+	protected int id;
+
+	/** 权限名 */
+	protected String name;
+
+	/** 权限对应的uri */
+	protected List<String> uris;
+
+	/** 与权限对应的菜单 */
+	protected Menu menu;
 
 	public SimpleRole(int id, String name) {
 		this.id = id;

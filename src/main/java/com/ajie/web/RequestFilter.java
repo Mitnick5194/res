@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ajie.res.navigator.Menu;
 import com.ajie.res.navigator.NavigatorService;
@@ -27,8 +27,8 @@ import com.ajie.res.user.UserService;
 
 public class RequestFilter implements Filter {
 
-	private static final Log log = LogFactory
-			.getLog(NavigatorServiceImpl.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(NavigatorServiceImpl.class);
 
 	/** 忽略验证的uri */
 	protected List<String> ignoreUri;
@@ -94,22 +94,23 @@ public class RequestFilter implements Filter {
 		}
 		Menu menu = navigatorService.getMenuByUri(uri);
 		if (null == menu) {
-			log.debug("无访问权限: " + uri);
+			logger.debug("无访问权限: " + uri);
 			((HttpServletResponse) response)
 					.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
 		Role role = menu.getRole();
 		// 从尝试从request中获取 user
-		User user = (User) request.getAttribute(User.USER_COOKIE_SESSION);
+		User user = (User) request.getAttribute(User.USER_SESSION_KEY);
 		HttpSession session = req.getSession();
 		if (null == user) {
 			// 再尝试从cookie中
 			Cookie[] cookies = req.getCookies();
 			if (null != cookies) {
 				for (Cookie cookie : cookies) {
-					if (User.USER_COOKIE_SESSION.equals(cookie.getName())) {
-						user = (User) session.getAttribute(cookie.getName());
+					if (User.USER_SESSION_KEY.equals(cookie.getName())) {
+						user = (User) session.getAttribute(cookie.getValue());
+						break;
 					}
 				}
 			}
@@ -138,14 +139,16 @@ public class RequestFilter implements Filter {
 		for (int rid : roles) {
 			if (roleId == rid) {
 				hasRole = true;
+				break;
 			}
 		}
 		if (!hasRole) {
-			log.debug("无访问权限: " + uri);
+			logger.debug("无访问权限: " + uri);
 			((HttpServletResponse) response)
 					.sendError(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
+		chain.doFilter(request, response);
 	}
 
 	@Override
