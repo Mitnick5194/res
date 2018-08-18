@@ -2,33 +2,35 @@
 NAME=res
 UPLOAD_NAME=res-1.0.0
 
+BASE_PATH=/var/www/$NAME
 TOMCAT_HOME=/home/ajie/tomcat
 USER_DIR=/var/www/$NAME/$UPLOAD_NAME
-PROJECT_DIR=$TOMCAT_HOME/webapps/$NAME
+TOMCAT_USER_DIR=$TOMCAT_HOME/webapps/$NAME
+TOMCAT_WEBAPPS=$TOMCAT_HOME/webapps
 
 if [ ! -d $USER_DIR ] ; then
 	echo $USER_DIR/$NAME not exit
 	exit 1
 fi
 
+if [ -d $BASE_PATH/${NAME}.old ];then
+	echo deletting ${NAME}.old...
+fi
+
 $TOMCAT_HOME/bin/shutdown.sh
-rm -rf $PROJECT_NAME/META-INF
-mv $USER_DIR/META-INF $PROJECT_DIR
 
-rm -rf  $PROJECT_DIR/$NAME
-mv $USER_DIR/$NAME $PROJECT_DIR
+mv  $TOMCAT_USER_DIR $BASE_PATH/${res}.old
 
-mv $USER_DIR/WEB-INF/*.* $PROJECT_DIR/WEB-INF/
+mv $USER_DIR $TOMCAT_WEBAPPS
 
-rm -rf $PROJECT_DIR/WEB-INF/lib
-mv $USER_DIR/WEB-INF/lib $PROJECT_DIR/WEB-INF/
+# rename because maven build project is carried version info
+mv $UPLOAD_NAME $NAME
 
-rm -rf $PROJECT_DIR/WEB-INF/classes/com
-mv $USER_DIR/WEB-INF/classes/com /$PROJECT_DIR/WEB-INF/classes/
-$TOMCAT_HOME/bin/startup.sh
-
-echo done.
-exit 0
-
+for file in $BASE_PATH
+do
+	if test -f $file;then
+		cp $file $TOMCAT_USER_DIR/WEB-INF/classes
+	fi
+done
 
 
