@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void setUserData(String xml) throws IOException {
+		logger.info("哈哈哈哈哈");
 		synchronized (lock) {
 			if (null == xml) {
 				return;

@@ -35,6 +35,7 @@
 			<value>
 				/*.admin = homeController
 				/*.do = homeController
+				/blog/*.do=blogController
 			</value>
 		</property>
 	</bean>

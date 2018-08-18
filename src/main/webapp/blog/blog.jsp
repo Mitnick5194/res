@@ -1,9 +1,11 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width , initial-scale=1">
-<title>测试首页</title>
+<title>博客专栏</title>
 <link href="../css/common.css" rel="stylesheet" type="text/css">
 
 <style type="text/css">
@@ -13,7 +15,7 @@
 		background: #fff;
 	}
 	.min-width-client-header .tag-btn{
-	    margin-left: 10px;
+	    margin: 10px;
 	    padding: 6px 7px;
 	    border: 1px solid #eee;
 		background-color: #fafafa;

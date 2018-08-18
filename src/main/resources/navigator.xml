@@ -22,8 +22,11 @@
 		<menu id="0x05" name="导航">
 			<uri>/res/nav.do</uri>
 		</menu>
-		<menu id="0x6" name="登录">
+		<menu id="0x06" name="登录">
 			<uri>/res/login.do</uri>
+		</menu>
+		<menu id="0x07" name="博客专栏">
+			<uri>/blog/blog.do</uri>
 		</menu>
 	</menus>
 </navigator>

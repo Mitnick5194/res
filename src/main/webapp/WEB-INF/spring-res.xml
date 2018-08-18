@@ -11,7 +11,7 @@
 	http://www.springframework.org/schema/aop
 	http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
-
+<!-- 这个过滤器一定不能配在spring-mvc的spring文件中  -->
 	<bean id="requestFilter" class="com.ajie.web.RequestFilter">
 		<property name="navigatorService" ref="navigatorService" />
 		<property name="userService" ref="userService" />
@@ -19,6 +19,7 @@
 			<list>
 				<value>/res/index.do</value>
 				<value>/res/login.do</value>
+				<value>/res/blog/blog.do</value>
 			</list>
 		</property>
 		<property name="encoding" value="utf-8" />
