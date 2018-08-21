@@ -8,7 +8,7 @@
 <title>博客专栏</title>
 <link href="../css/common.css" rel="stylesheet" type="text/css">
 <link href="css/blog.css" rel="stylesheet" type="text/css">
-
+<script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
 <style type="text/css">
 
 	
@@ -110,7 +110,6 @@
 				</div>
 			</div>
 	</div>
-	<script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
 	<script>
 		var tagBtn = $("#slideOutTag");
 		var containner = $("#iContainner");

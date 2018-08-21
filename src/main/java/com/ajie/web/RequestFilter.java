@@ -91,37 +91,30 @@ public class RequestFilter implements Filter {
 			return;
 		}
 		Menu menu = navigatorService.getMenuByUri(uri);
+		boolean isAdmin = false; // 是否脚本登录
 		if (null == menu) {
-			logger.debug("无访问权限: " + uri);
-			((HttpServletResponse) response)
-					.sendError(HttpServletResponse.SC_FORBIDDEN);
-			return;
+			int idx = uri.indexOf(".admin");
+			if (idx == -1 || idx != uri.length() - 7) { // 确保.admin是后缀
+				logger.debug("找不到页面: " + uri);
+				((HttpServletResponse) response)
+						.sendError(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
+			isAdmin = true;
+
 		}
-		Role role = menu.getRole();
-		// 从尝试从request中获取 user
-		/*
-		 * User user = (User) request.getAttribute(User.USER_SESSION_KEY);
-		 * HttpSession session = req.getSession(); if (null == user) { //
-		 * 再尝试从cookie中 Cookie[] cookies = req.getCookies(); if (null != cookies)
-		 * { for (Cookie cookie : cookies) { if
-		 * (User.USER_SESSION_KEY.equals(cookie.getName())) { user = (User)
-		 * session.getAttribute(cookie.getValue()); break; } } } } if (null ==
-		 * user) { // 最后尝试从url中的参数获取 String sid =
-		 * request.getParameter(User.USER_COOKIE_SESSION); if (null != sid) {
-		 * user = (User) session.getAttribute(sid); } }
-		 */
 		User user = userService.getUserBySession(req);
 		if (null == user) {
 			gotoLogin(request, response);
 			return;
 		}
 		// .admin后缀的链接不用验证权限，用于执行脚本
-		int idx = uri.indexOf(".admin");
-		if (idx > -1 && idx == uri.length() - 7) { // 确保.admin是后缀
+		if (isAdmin) {
 			chain.doFilter(request, response);
 			return;
 		}
 		// 验证权限
+		Role role = menu.getRole();
 		List<Integer> roles = user.getRoles();
 		int roleId = role.getId();
 		boolean hasRole = false;

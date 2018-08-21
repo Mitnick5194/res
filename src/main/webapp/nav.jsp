@@ -18,7 +18,10 @@
  		function movecomming(){
  			var menu = $("#iMenus");
  			var menus = menu.find("a");
- 			var width = menus.length * (menus.eq(0).width()+15);
+ 			var width = 0;
+ 			$.each(menus , function(){
+ 				width += $(this).width()+15;
+ 			})
  			var overflow = width - $(document).width();
  			if(overflow > 0){
  				menu.css("transform", "translateX(-"+overflow+"px)");

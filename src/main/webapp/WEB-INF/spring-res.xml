@@ -19,7 +19,7 @@
 			<list>
 				<value>/res/index.do</value>
 				<value>/res/login.do</value>
-				<value>/res/blog/blog.do</value>
+				<!-- <value>/res/blog/blog.do</value> -->
 				<value>/res/nav.do</value>
 			</list>
 		</property>

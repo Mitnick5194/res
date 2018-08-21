@@ -261,7 +261,7 @@ public class UserServiceImpl implements UserService {
 		session.setAttribute(id, user);
 		Cookie cookie = new Cookie(User.USER_SESSION_KEY, id);
 		response.addCookie(cookie);
-		logger.info("增加回话： " + user.getName());
+		logger.info("增加会话： " + user.getName() + "/" + id);
 		return session;
 	}
 

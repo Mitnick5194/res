@@ -52,6 +52,18 @@ html, body {
 	transition: all .5s ease;
 }
 
+.menu-wrap a{
+	color: #3D3D3D
+}
+
+.menu-wrap a:last-child{
+	padding-right: 15px;
+}
+.menu-wrap a:hover{
+	color: #c92027;
+}
+
+
 /* 桌面端左侧标签栏 */
 .left-tag {
 	width: 250px;
