@@ -5,146 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>测试首页</title>
 <link href="../css/common.css" rel="stylesheet" type="text/css">
+<link href="css/blog.css" rel="stylesheet" type="text/css">
 
 <style type="text/css">
-/* 如果不设置overflow:hidden 会出现横向滚动条 */
-html,body{overflow:hidden;overflow-y:auto;}
-	.min-width-client-header{
-		height: 50px;
-		line-height: 50px;
-		background: #fff;
-	}
-	.min-width-client-header .tag-btn{
-	    margin-left: 10px;
-	    padding: 6px 7px;
-	    border: 1px solid #eee;
-		background-color: #fafafa;
-		border-radius: 3px;
-	}
-	.min-width-client-header .tag-btn:focus{
-		outline: none;
-	}
-	.min-width-client-header .tag-btn .bar-icon{
-		width: 22px;
-		height: 2px;
-		border-radius: 1px;
-		display: block;
-		background-color: #bbb;
-	}
-	.min-width-client-header .tag-btn .bar-icon + .bar-icon{
-		 margin-top: 5px;
-	}
-	.nav{
-		background-color: #eee;
-		height: 50px;
-		line-height: 50px;
-	}
-	.nav ul{
-		list-style: none;
-	}
-	.nav li{
-		    display: inline-block;
-		    height: 35px;
-		    line-height: 35px;
-		    padding: 0 10px;
-	}
-	.container{
-		margin-top: 15px;
-		text-align: center;
-		position: relative;
-	}	
-	.left-tag{
-		width: 250px;
-		position: absolute;
-		top: -65px;
-		left: -250px;
-		transition: all .25s ease-out;
-		z-index: 1001; 
-	}
-	.left-tag.slide-control{
-		left: 0;
-	}
-	.container{
-		position: relative;
-		left: 0;
-		transition: all .25s ease-out;
-	}
-	.container.active{
-		left: 200px;
-	}
-	
-	
-	.right-info{
-		display: none;
-	}
-	
-	.list-group{
-		border: 1px solid #eee;
-		border-radius: 3px; 	
-		backgound-color: #fff;
-	}
-	.list-group a{
-		display: inline-block;
-		width: 100%;
-		padding: 10px 0;
-		text-align: center;
-	}
-	.list-group a + a{
-		border-top: 1px solid #eee;
-	}
-	.list-group .active{
-		background-color: #337ab7;
-		color: #fff;
-	}
-	
-	
-	 @media screen and  (min-width: 768px){
-		.nav{
-			width: 750px;
-			background: red;
-		}
-		
-	}	@media screen and  (min-width: 992px){
-		.nav{
-			width: 970px;
-			background-color: #eee;
-		}
-	}  @media screen and  (min-width: 1200px){
-		.min-width-client-header{
-			display: none;
-		}
-		
-		.nav{
-			width: calc(100% - 120px);
-			width:-webkit-calc(100% - 120px);
-			background-color: #eee;
-		}
-		.container{
-			width: 1170px;
-			display: flex;
-		}
-		.left-tag{
-			width: 200px;
-			position: unset;
-		}
-		.right-info{
-			width: 200px;
-			float: right;
-			display: inline-block;
-		}
-		.center-main{
-			width: calc(100% - 600px);
-		}
-	}  
-	 
-		.fl-rl-a{
-			padding-right: 15px;
-			padding-left: 15px;
-			margin-right: auto;
-			margin-left: auto;
-		}
-	
-	
+/* 	html, body {
+	overflow: hidden;
+	overflow-y: auto;
+} */
 </style>
 </head>
 <body>
@@ -156,16 +23,36 @@ html,body{overflow:hidden;overflow-y:auto;}
 				<span class="bar-icon"></span>
 			</button>
 		</nav>
-		<nav class="nav fl-rl-a">
+		<!-- <nav class="nav fl-rl-a">
 			<ul class="nav_ul">
 				<li>菜单1</li>
 				<li>菜单2</li>
 				<li>菜单3</li>
 				<li>菜单4</li>
 				<li>菜单5</li>
-				<!-- <li>菜单6</li>
-				<li>菜单7</li> -->
+				<li>菜单6</li>
+				<li>菜单7</li>
 			</ul>
+		</nav> -->
+		<nav class="nav fl-rl-a">
+			<div class="menu-wrap" id="iMenus">
+				<a class="btn-nav">菜单1</a>
+				<a class="btn-nav">菜单2</a>
+				<a class="btn-nav">菜单3</a>
+				<a class="btn-nav">菜单4</a>
+				<a class="btn-nav">菜单5</a>
+				<a class="btn-nav">菜单6</a>
+				<a class="btn-nav">菜单7</a>
+				<a class="btn-nav">菜单8</a>
+				<a class="btn-nav">菜单9</a>
+				<a class="btn-nav">菜单10</a>
+				<a class="btn-nav">菜单11</a>
+				<a class="btn-nav">菜单12</a>
+				<a class="btn-nav">菜单13</a>
+				<a class="btn-nav">菜单14</a>
+				<a class="btn-nav">菜单15</a>
+				<a class="btn-nav">菜单16</a>
+			</div>
 		</nav>
 		<div id="iContainner" class="container fl-rl-a">
 				<div id="iTags" class="left-tag">
@@ -239,6 +126,22 @@ html,body{overflow:hidden;overflow-y:auto;}
 		tagBtn.on("click" , function(){
 			containner.toggleClass("active");
 		})
+		
+		//移动端进入页面移动菜单 提示用户可以移动
+		$(document).ready(function(){
+			var menu = $("#iMenus");
+			var menus = menu.find("a");
+			var width = menus.length * (menus.eq(0).width()+15);
+			var overflow = width - $(document).width();
+			if(overflow > 0){
+				menu.css("transform", "translateX(-"+overflow+"px)");
+				setTimeout(function(){
+					menu.css("transform", "translateX(-0)");
+				} , 500)
+				
+			}
+		})
 	</script>
+	
 </body>
 </html>

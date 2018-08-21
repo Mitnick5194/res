@@ -73,7 +73,7 @@
 
 		<!-- jstl -->
 		<!-- https://mvnrepository.com/artifact/javax.servlet.jsp.jstl/jstl -->
-		<dependency> 
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
@@ -84,6 +84,16 @@
 
 	<!-- 插件 -->
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resource</directory>
+				<!-- 会将配置文件中${}代替为命令行带入的参数 -->
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>*</exclude>
+				</excludes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>

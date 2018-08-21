@@ -1,0 +1,165 @@
+@charset "utf-8";
+/* 如果不设置overflow:hidden 会出现横向滚动条 */  
+
+html, body {
+	overflow: hidden;
+	overflow-y: auto;
+}
+
+/* 移动端头部 */
+.min-width-client-header {
+	height: 50px;
+	line-height: 50px;
+	background: #fff;
+}
+
+/* 移动端头部展开按钮 */
+.min-width-client-header .tag-btn {
+	margin-left: 10px;
+	padding: 6px 7px;
+	border: 1px solid #eee;
+	background-color: #fafafa;
+	border-radius: 3px;
+}
+
+.min-width-client-header .tag-btn:focus {
+	outline: none;
+}
+
+.min-width-client-header .tag-btn .bar-icon {
+	width: 22px;
+	height: 2px;
+	border-radius: 1px;
+	display: block;
+	background-color: #bbb;
+}
+
+.min-width-client-header .tag-btn .bar-icon+.bar-icon {
+	margin-top: 5px;
+}
+
+/* 菜单导航 */
+.nav {
+	background-color: #eee;
+	height: 50px;
+	line-height: 50px;
+	overflow: auto;
+}
+
+.menu-wrap {
+	display: flex;
+	height: 100%;
+	transition: all .5s ease;
+}
+
+/* 桌面端左侧标签栏 */
+.left-tag {
+	width: 250px;
+	position: absolute;
+	top: -65px;
+	left: -250px;
+	transition: all .25s ease-out;
+	z-index: 1001;
+}
+
+.left-tag.slide-control {
+	left: 0;
+}
+
+.container {
+	position: relative;
+	margin-top: 15px; text-align : center;
+	left: 0;
+	transition: all .25s ease-out;
+	text-align: center;
+}
+
+.container.active {
+	left: 200px;
+}
+
+.right-info {
+	display: none;
+}
+
+.list-group {
+	border: 1px solid #eee;
+	border-radius: 3px;
+	backgound-color: #fff;
+}
+
+.list-group a {
+	display: inline-block;
+	width: 100%;
+	padding: 10px 0;
+	text-align: center;
+}
+
+.list-group a+a {
+	border-top: 1px solid #eee;
+}
+
+.list-group .active {
+	background-color: #337ab7;
+	color: #fff;
+}
+
+.btn-nav {
+	margin-right: 15px;
+	display: block;
+	white-space: nowrap;
+}
+
+.fl-rl-a {
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+
+/* 响应各种屏幕 */
+@media screen and (min-width: 768px) {
+	.nav {
+		width: 750px;
+		background: red;
+	}
+}
+
+@media screen and (min-width: 992px) {
+	.nav {
+		width: 970px;
+		background-color: #eee;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.min-width-client-header {
+		display: none;
+	}
+	.nav {
+		width: calc(100% - 120px);
+		width: -webkit-calc(100% - 120px);
+		background-color: #eee;
+	}
+	.container {
+		width: 1170px;
+		display: flex;
+	}
+	.left-tag {
+		width: 200px;
+		position: unset;
+	}
+	.right-info {
+		width: 200px;
+		float: right;
+		display: inline-block;
+	}
+	.center-main {
+		width: calc(100% - 400px);
+	}
+	.btn-nav {
+		margin-right: 25px;
+	}
+}
+
