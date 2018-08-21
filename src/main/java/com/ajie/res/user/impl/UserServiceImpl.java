@@ -212,9 +212,11 @@ public class UserServiceImpl implements UserService {
 			Method method = cla.getMethod(methodName, paramType);
 			return method;
 		} catch (NoSuchMethodException e) {
-			logger.error("setter方法不存在:" + methodName + " " + Various.printTrace(e));
+			logger.error("setter方法不存在:" + methodName + " "
+					+ Various.printTrace(e));
 		} catch (SecurityException e) {
-			logger.error("setter方法不存在:" + methodName + " " + Various.printTrace(e));
+			logger.error("setter方法不存在:" + methodName + " "
+					+ Various.printTrace(e));
 		}
 		return null;
 	}
@@ -261,5 +263,31 @@ public class UserServiceImpl implements UserService {
 		response.addCookie(cookie);
 		logger.info("增加回话： " + user.getName());
 		return session;
+	}
+
+	@Override
+	public User getUserBySession(HttpServletRequest request) {
+		User user = (User) request.getAttribute(User.USER_SESSION_KEY);
+		HttpSession session = request.getSession();
+		if (null == user) {
+			// 再尝试从cookie中
+			Cookie[] cookies = request.getCookies();
+			if (null != cookies) {
+				for (Cookie cookie : cookies) {
+					if (User.USER_SESSION_KEY.equals(cookie.getName())) {
+						user = (User) session.getAttribute(cookie.getValue());
+						break;
+					}
+				}
+			}
+		}
+		if (null == user) {
+			// 最后尝试从url中的参数获取
+			String sid = request.getParameter(User.USER_COOKIE_SESSION);
+			if (null != sid) {
+				user = (User) session.getAttribute(sid);
+			}
+		}
+		return user;
 	}
 }

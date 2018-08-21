@@ -34,6 +34,8 @@ public interface UserService {
 
 	HttpSession putUserIntoSession(User user, HttpServletRequest request,
 			HttpServletResponse response) throws UserException;
+	
+	User getUserBySession(HttpServletRequest request);
 
 //	User getUserById(String name);
 

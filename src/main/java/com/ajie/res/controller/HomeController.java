@@ -1,11 +1,13 @@
 package com.ajie.res.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,6 +37,11 @@ public class HomeController {
 
 	public static final String PREFIX = "res/";
 
+	private void setAjaxContentType(HttpServletResponse response) {
+		response.setContentType("application/json;charset=UTF-8");
+		response.setCharacterEncoding("utf-8");
+	}
+
 	@RequestMapping
 	String index(HttpServletRequest request, HttpServletResponse response) {
 		request.setAttribute("msg", "hello i am param from controller");
@@ -42,35 +49,48 @@ public class HomeController {
 	}
 
 	@RequestMapping
-	String nav(HttpServletRequest request, HttpServletResponse response) {
-		Navigator navigator = navigatorService.getNavigator();
-		List<User> users = userService.getUsers();
-		JSONArray userArr = new JSONArray();
-		for (User u : users) {
-			JSONObject obj = new JSONObject();
-			obj.put("id", u.getId());
-			obj.put("name", u.getName());
-			obj.put("email", u.getEmail());
-			userArr.put(obj);
+	void nav(HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		setAjaxContentType(response);
+		PrintWriter out = response.getWriter();
+		User user = userService.getUserBySession(request);
+		if (null == user) {
+			// 因jsonp不能吧页面的cookie带过来，所以无法正常的从cookie中获取sessiond key 所要在
+			// js中吧全部的cookie传过来 在分析
+			String cookies = request.getParameter("cookies");
+			String[] cookie = cookies.split(";");
+			for (String c : cookie) {
+				if (c.length() < 3) {
+					continue;
+				}
+				int idx = c.indexOf("=");
+				if (idx == -1) {
+					continue;
+				}
+				String key = c.substring(0, idx);
+				if (!User.USER_SESSION_KEY.equals(key)) {
+					continue;
+				}
+				String val = c.substring(idx+1, c.length()-1);
+				HttpSession session = request.getSession();
+				user = (User) session.getAttribute(val);
+			}
 		}
-		request.setAttribute("users", userArr.toString());
-		if (null == navigator) {
-			return null;
-		}
-		List<Menu> menus = navigator.getMenus();
-		if (null == menus) {
-			return null;
-		}
+		Navigator nav = navigatorService.getNavigatorByUser(user);
+		String callback = request.getParameter("callback");
+		List<Menu> menus = nav.getMenus();
 		JSONArray arr = new JSONArray();
-		for (Menu m : menus) {
+		for (Menu menu : menus) {
 			JSONObject obj = new JSONObject();
-			obj.put("id", m.getId());
-			obj.put("name", m.getName());
-			obj.put("uris", m.getUris());
+			obj.put("id", menu.getId());
+			obj.put("name", menu.getName());
+			obj.put("url", menu.getUris().get(0));
 			arr.put(obj);
 		}
-		request.setAttribute("info", arr.toString());
-		return PREFIX + "header";
+		// out.print(new JSONObject().put("nav", arr));
+		out.write(callback + "(" + arr + ")");
+		out.flush();
+		out.close();
 	}
 
 	@RequestMapping

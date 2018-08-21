@@ -10,10 +10,8 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,27 +99,18 @@ public class RequestFilter implements Filter {
 		}
 		Role role = menu.getRole();
 		// 从尝试从request中获取 user
-		User user = (User) request.getAttribute(User.USER_SESSION_KEY);
-		HttpSession session = req.getSession();
-		if (null == user) {
-			// 再尝试从cookie中
-			Cookie[] cookies = req.getCookies();
-			if (null != cookies) {
-				for (Cookie cookie : cookies) {
-					if (User.USER_SESSION_KEY.equals(cookie.getName())) {
-						user = (User) session.getAttribute(cookie.getValue());
-						break;
-					}
-				}
-			}
-		}
-		if (null == user) {
-			// 最后尝试从url中的参数获取
-			String sid = request.getParameter(User.USER_COOKIE_SESSION);
-			if (null != sid) {
-				user = (User) session.getAttribute(sid);
-			}
-		}
+		/*
+		 * User user = (User) request.getAttribute(User.USER_SESSION_KEY);
+		 * HttpSession session = req.getSession(); if (null == user) { //
+		 * 再尝试从cookie中 Cookie[] cookies = req.getCookies(); if (null != cookies)
+		 * { for (Cookie cookie : cookies) { if
+		 * (User.USER_SESSION_KEY.equals(cookie.getName())) { user = (User)
+		 * session.getAttribute(cookie.getValue()); break; } } } } if (null ==
+		 * user) { // 最后尝试从url中的参数获取 String sid =
+		 * request.getParameter(User.USER_COOKIE_SESSION); if (null != sid) {
+		 * user = (User) session.getAttribute(sid); } }
+		 */
+		User user = userService.getUserBySession(req);
 		if (null == user) {
 			gotoLogin(request, response);
 			return;

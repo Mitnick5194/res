@@ -13,6 +13,7 @@
 
 	
 </style>
+	<script type="text/javascript" src="../js/jquery-1.9.1.js"></script>
 </head>
 <body>
 	<div class="main">
@@ -24,17 +25,6 @@
 			</button>
 		</nav>
 		<!-- <nav class="nav fl-rl-a">
-			<ul class="nav_ul">
-				<li>菜单1</li>
-				<li>菜单2</li>
-				<li>菜单3</li>
-				<li>菜单4</li>
-				<li>菜单5</li>
-				<li>菜单6</li>
-				<li>菜单7</li>
-			</ul>
-		</nav> -->
-		<nav class="nav fl-rl-a">
 			<div class="menu-wrap" id="iMenus">
 				<a class="btn-nav">菜单1</a>
 				<a class="btn-nav">菜单2</a>
@@ -46,14 +36,15 @@
 				<a class="btn-nav">菜单8</a>
 				<a class="btn-nav">菜单9</a>
 				<a class="btn-nav">菜单10</a>
-				<!-- <a class="btn-nav">菜单11</a>
+				<a class="btn-nav">菜单11</a>
 				<a class="btn-nav">菜单12</a>
 				<a class="btn-nav">菜单13</a>
 				<a class="btn-nav">菜单14</a>
 				<a class="btn-nav">菜单15</a>
-				<a class="btn-nav">菜单16</a> -->
+				<a class="btn-nav">菜单16</a>
 			</div>
-		</nav>
+		</nav> -->
+		<jsp:include page="/nav.jsp"></jsp:include>
 		<div id="iContainner" class="container fl-rl-a">
 				<div id="iTags" class="left-tag">
 		        	<div class="list-group">
@@ -127,20 +118,9 @@
 			containner.toggleClass("active");
 		})
 		
-		//移动端进入页面移动菜单 提示用户可以移动
-		$(document).ready(function(){
-			var menu = $("#iMenus");
-			var menus = menu.find("a");
-			var width = menus.length * (menus.eq(0).width()+15);
-			var overflow = width - $(document).width();
-			if(overflow > 0){
-				menu.css("transform", "translateX(-"+overflow+"px)");
-				setTimeout(function(){
-					menu.css("transform", "translateX(-0)");
-				} , 500)
-				
-			}
-		})
+		
+	/* 	var jsonp = $("<script/>").attr("type" , "text/javascript").attr("src" ,"http://127.0.0.1:8088/res/nav.do?callback=test" );
+		$("head").eq(0).append(jsonp); */
 	</script>
 	
 </body>
