@@ -1,12 +1,9 @@
 package com.ajie.res.user.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ajie.common.ConstantPool;
-import com.ajie.res.navigator.Navigator;
 import com.ajie.res.navigator.NavigatorService;
-import com.ajie.res.user.Role;
 import com.ajie.res.user.User;
 import com.ajie.res.user.UserService;
 import com.ajie.res.user.exception.UserException;
@@ -33,83 +28,44 @@ import com.ajie.res.user.simple.SimpleUser;
 import com.ajie.utils.cache.Cache;
 import com.ajie.utils.cache.MapCache;
 import com.ajie.utils.common.Various;
+import com.ajie.utils.common.XmlHelper;
 
 public class UserServiceImpl implements UserService {
-
-	/* @Resource(name = "navigatorService") */
+	private static final Logger logger = LoggerFactory
+			.getLogger(UserServiceImpl.class);
+	/**
+	 * 导航服务
+	 */
 	protected NavigatorService navigatorService;
+
+	/**
+	 * 配置用户
+	 */
+	protected List<User> users;
+
+	/**
+	 * 用户数据缓存
+	 */
+	private static Cache<String, User> userCache = new MapCache<String, User>(
+			"user");
+	private Object lock = new Object();
 
 	public void setNavigatorService(NavigatorService navigatorService) {
 		this.navigatorService = navigatorService;
 	}
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(UserServiceImpl.class);
-	protected List<User> users;
-	private Object lock = new Object();
-
-	private static Cache<String, User> userCache = new MapCache<String, User>();
-
-	@Override
-	public void setUserData(String xml) throws IOException {
-		logger.info("哈哈哈哈哈");
-		synchronized (lock) {
-			if (null == xml) {
-				return;
-			}
-			load(xml);
-
-		}
-	}
-
 	protected void load(String xmlFile) throws IOException {
-		if (null == xmlFile) {
+		InputStream is = XmlHelper.parseInputStream(xmlFile);
+		if (null == is) {
+			logger.error(xmlFile + "配置文件加载失败");
 			return;
 		}
-		URL url;
-		try {
-			// 先从当前线程的加载器路径读取（appClassLoader，其实就是项目的路径）
-			ClassLoader loader = Thread.currentThread().getContextClassLoader();
-			url = loader.getResource(xmlFile);
-		} catch (SecurityException e) {
-			// 从系统资源路径中查找
-			url = ClassLoader.getSystemResource(xmlFile);
-		}
-		InputStream in = null;
-		try {
-			if (null == url) { // 还为空，只能从用户文件夹中找一下了
-				String path = System.getProperty("user.dir", "");
-				if (null != path && path.length() > 0) {
-					if (File.separatorChar == path.charAt(path.length() - 1)) {
-						xmlFile = path + xmlFile;
-					} else {
-						xmlFile = path + File.separator + xmlFile;
-					}
-					in = new FileInputStream(xmlFile);
-				}
-			} else {
-				in = url.openStream();
-			}
-			if (null == in) {
-				return;
-			}
-			parse(in);
-		} finally {
-			if (null != in) {
-				try {
-					in.close();
-				} catch (Exception e) {
-					// Ignore
-				}
-
-			}
-		}
+		parse(is);
 	}
 
 	@SuppressWarnings("unchecked")
 	protected void parse(InputStream in) {
 		SAXReader reader = new SAXReader();
-
 		List<User> userList = new ArrayList<User>();
 		Document doc = null;
 		String setter = null;
@@ -129,7 +85,7 @@ public class UserServiceImpl implements UserService {
 					String setterName = el.attributeValue("name");
 					String value = el.attributeValue("value");
 					setter = getSetter(setterName);
-					// value为空 ？ 可能是多个value
+					// value为空 ？ 可能是多个value 只有权限有传入多个值
 					if (null == value) {
 						List<Element> values = el.elements("value");
 						List<Integer> vals = new ArrayList<Integer>(
@@ -149,20 +105,6 @@ public class UserServiceImpl implements UserService {
 							method.invoke(user, vals);
 						}
 					} else {
-						// 看看是不是通配符*设置权限
-						if ("roles".equals(setterName) && "*".equals(value)) {
-							Navigator navigator = navigatorService
-									.getNavigator();
-							List<Role> roles = navigator.getRoles();
-							List<Integer> roleList = new ArrayList<Integer>(
-									roles.size());
-							for (Role r : roles) {
-								int roleId = r.getId();
-								roleList.add(roleId);
-							}
-							user.setRoles(roleList);
-							continue;
-						}
 						Method method = getMethod(user, setter, String.class);
 						method.invoke(user, value);
 					}
@@ -289,5 +231,16 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		return user;
+	}
+
+	@Override
+	public void setUserData(String xml) throws IOException {
+		synchronized (lock) {
+			if (null == xml) {
+				return;
+			}
+			load(xml);
+
+		}
 	}
 }

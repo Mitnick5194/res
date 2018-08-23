@@ -6,18 +6,15 @@ import com.ajie.res.user.Role;
 import com.ajie.res.user.User;
 
 /**
- * <p>
- * 菜单导航条，对象托管给JMX管理，先从缓存中读取菜单，如果缓存中存在，
- * </p>
- * <p>
- * 则直接使用缓存中的菜单，如果不存在，则尝试读取文件中的内容 , 如果更改了配置文件中的内容
- * <p>
- * <p>
- * 可以通过JMX调起update方法实现无重启更新配置
- * </p>
+ *
+ * 菜单导航条，对象托管给JMX管理，先从缓存中读取菜单，如果缓存中存在，<br>
+ * 则直接使用缓存中的菜单，如果不存在，则尝试读取文件中的内容 , 如果更改了配置文件中的内容<br>
+ * 可以通过JMX调起update方法实现无重启更新配置<br>
  * 
+ * Deprecated 设计失误 不需要有navigator 只要Menu就好了
  * @author niezhenjie
  */
+@Deprecated
 public interface Navigator {
 
 	/**

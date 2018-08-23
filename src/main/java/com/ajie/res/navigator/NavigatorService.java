@@ -1,5 +1,7 @@
 package com.ajie.res.navigator;
 
+import java.util.List;
+
 import com.ajie.res.user.User;
 
 /**
@@ -15,6 +17,7 @@ public interface NavigatorService {
 	 * @param user
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	Navigator getNavigatorByUser(User user);
 
 	/**
@@ -22,6 +25,7 @@ public interface NavigatorService {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	Navigator getNavigator();
 
 	/**
@@ -31,4 +35,12 @@ public interface NavigatorService {
 	 * @return
 	 */
 	Menu getMenuByUri(String uri);
+
+	/**
+	 * 根据登录用户，返回的菜单
+	 * 
+	 * @param user
+	 * @return
+	 */
+	List<Menu> getMenus(User user);
 }

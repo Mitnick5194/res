@@ -18,24 +18,31 @@ import org.slf4j.LoggerFactory;
 import com.ajie.res.navigator.Menu;
 import com.ajie.res.navigator.Navigator;
 import com.ajie.res.navigator.NavigatorService;
-import com.ajie.res.user.Role;
 import com.ajie.res.user.User;
-import com.ajie.res.user.simple.SimpleRole;
 
 /**
  * @author niezhenjie
  */
+@SuppressWarnings("deprecation")
 public class NavigatorServiceImpl implements NavigatorService {
 	private static final Logger logger = LoggerFactory
 			.getLogger(NavigatorServiceImpl.class);
-	protected Navigator navigator;
 
+	/** 所有的菜单，从配置文件中初始化进来 */
+	protected List<Menu> menus;
+	/** 显示用户有权限访问的菜单还是全部显示出来 */
+	protected boolean showAll;
+	/** 锁 */
 	protected Object lock = new Object();
 
 	public void setXmlFile(String xmlFile) throws IOException {
 		synchronized (lock) {
 			load(xmlFile);
 		}
+	}
+
+	public void setShowAll(boolean showAll) {
+		this.showAll = showAll;
 	}
 
 	@Override
@@ -56,12 +63,10 @@ public class NavigatorServiceImpl implements NavigatorService {
 	 * @return
 	 */
 	private Menu getMenuById(int id) {
-		if (navigator != null) {
-			List<Menu> menus = navigator.getMenus();
-			for (Menu menu : menus) {
-				if (menu.getId() == id) {
-					return menu;
-				}
+		for (int i = 0, len = menus.size(); i < len; i++) {
+			Menu menu = menus.get(i);
+			if (menu.getId() == id) {
+				return menu;
 			}
 		}
 		return null;
@@ -69,7 +74,7 @@ public class NavigatorServiceImpl implements NavigatorService {
 
 	@Override
 	public Navigator getNavigator() {
-		return navigator;
+		return null;
 	}
 
 	protected void load(String xmlFile) throws IOException {
@@ -121,8 +126,6 @@ public class NavigatorServiceImpl implements NavigatorService {
 		SAXReader reader = new SAXReader();
 		try {
 			List<Menu> navMenu = new ArrayList<Menu>();
-			List<Role> roles = new ArrayList<Role>();
-			Navigator navigator = new BaseNavigator(navMenu, roles);
 			Document doc = reader.read(in);
 			Element root = doc.getRootElement();
 			Element menus = root.element("menus");
@@ -143,20 +146,17 @@ public class NavigatorServiceImpl implements NavigatorService {
 					}
 				}
 				String name = e.attributeValue("name");
+				String index = e.attributeValue("index");
 				List<Element> uriEle = e.elements("uri");
 				List<String> uris = new ArrayList<String>(uriEle.size());
-				Menu m = new BaseMenu(id, name, uris);
+				Menu m = new BaseMenu(id, name, index, uris);
 				for (Element uri : uriEle) {
 					uris.add(uri.getTextTrim());
 				}
-				Role role = new SimpleRole();
-				role.genRole(m);
-				m.setRole(role);
-				roles.add(role);
 				navMenu.add(m);
 			}
+			this.menus = navMenu;
 			logger.info("已从配置文件中初始化导航条");
-			this.navigator = navigator;
 		} catch (DocumentException e) {
 			logger.warn("解析导航配置失败" + e);
 		}
@@ -167,7 +167,7 @@ public class NavigatorServiceImpl implements NavigatorService {
 		if (null == uri) {
 			return null;
 		}
-		List<Menu> menus = navigator.getMenus();
+		List<Menu> menus = this.menus;
 		for (Menu menu : menus) {
 			List<String> uris = menu.getUris();
 			for (String ur : uris) {
@@ -176,6 +176,15 @@ public class NavigatorServiceImpl implements NavigatorService {
 				}
 			}
 		}
+		return null;
+	}
+
+	@Override
+	public List<Menu> getMenus(User user) {
+		if (showAll) {
+			return menus;
+		}
+		List<Integer> roles = user.getRoles();
 		return null;
 	}
 }

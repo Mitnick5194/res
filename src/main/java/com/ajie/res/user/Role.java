@@ -5,8 +5,8 @@ import java.util.List;
 import com.ajie.res.navigator.Menu;
 
 /**
- * FIXME 角色表， 后续需调整 现在的角色和菜单一样 后续调整为角色包含一些列的菜单<br>
- * 由配置读入角色
+ * 
+ * 角色，一个角色可以包含一些列菜单或单独设置某些uri 两者混合也可以
  * 
  * @author niezhenjie
  */
@@ -45,13 +45,6 @@ public interface Role {
 	 * 
 	 * @return
 	 */
-	public Menu getMenu();
+	public List<Menu> getMenus();
 
-	/**
-	 * 有菜单生成角色
-	 * 
-	 * @param menu
-	 * @return
-	 */
-	public Role genRole(Menu menu);
 }

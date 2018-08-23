@@ -2,8 +2,6 @@ package com.ajie.res.navigator;
 
 import java.util.List;
 
-import com.ajie.res.user.Role;
-
 /**
  * 导航的单个菜单
  * 
@@ -39,11 +37,11 @@ public interface Menu {
 	List<String> getUris();
 
 	/**
-	 * 菜单的uri
+	 * 菜单的index
 	 * 
 	 * @return
 	 */
-	String getUri();
+	String getIndex();
 
 	/**
 	 * 菜单的父菜单
@@ -65,15 +63,5 @@ public interface Menu {
 	 * @return
 	 */
 	List<Menu> getChilds();
-
-	/**
-	 * 获取菜单所属权限 
-	 * 
-	 * @return
-	 */
-	Role getRole();
-
-	void setRole(Role role);
-	
 
 }

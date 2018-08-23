@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 以ConcurrentHashMap为存储介质的缓存，线程安全
  * 
@@ -13,7 +16,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <V>
  */
 public class MapCache<K, V> implements Cache<K, V> {
-
+	private final static Logger logger = LoggerFactory
+			.getLogger(MapCache.class);
 	/** 缓存最多项 */
 	public static final int MAXIMUN_CAPACITY = (1 << 27) - 1;
 
@@ -21,27 +25,34 @@ public class MapCache<K, V> implements Cache<K, V> {
 	/** 最后修改时间 */
 	protected Date lastModify;
 
+	/** 缓存名字 */
+	protected String name;
+
 	/**
 	 * 无参构造方法，初始化一个默认大小的、线程安全的Map
 	 */
-	public MapCache() {
+	public MapCache(String name) {
 		map = new ConcurrentHashMap<K, V>();
+		this.name = name;
 	}
 
-	public MapCache(int size) {
+	public MapCache(String name, int size) {
 		map = new ConcurrentHashMap<K, V>(size);
+		this.name = name;
 	}
 
-	public MapCache(Map<? extends K, ? extends V> map) {
+	public MapCache(String name, Map<? extends K, ? extends V> map) {
 		map = new ConcurrentHashMap<K, V>(map);
+		this.name = name;
 	}
 
-	public MapCache(Cache<? extends K, ? extends V> cache) {
+	public MapCache(String name, Cache<? extends K, ? extends V> cache) {
 		MapCache<? extends K, ? extends V> c;
 		if (cache instanceof MapCache) {
 			c = (MapCache<? extends K, ? extends V>) cache;
 			map = new ConcurrentHashMap<K, V>(c.map);
 		}
+		this.name = name;
 	}
 
 	public V put(K key, V value) {
@@ -49,6 +60,7 @@ public class MapCache<K, V> implements Cache<K, V> {
 		V v = map.put(key, value);
 		if (null == v || v != value) {
 			updateModifyDate();
+			logger.info(getName() + "添加一条数据{" + key + " : " + value + "}");
 		}
 		return v;
 	}
@@ -100,6 +112,13 @@ public class MapCache<K, V> implements Cache<K, V> {
 		if (size >= MAXIMUN_CAPACITY)
 			throw new IndexOutOfBoundsException();
 	}
-	
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getName() {
+		return name;
+	}
 
 }
