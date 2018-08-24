@@ -67,6 +67,30 @@ public class Various {
 		return str;
 	}
 
+	/**
+	 * 0x开头的十六进制转十进制
+	 * 
+	 * @param hex
+	 * @return
+	 */
+	public static int Hex2Deci(String hex) throws NumberFormatException {
+		if (null == hex) {
+			throw new NumberFormatException("格式错误，参数格式应为0x开头的十六进制: " + hex);
+		}
+		int len = hex.length();
+		if (len <= 2) {
+			throw new NumberFormatException("格式错误，参数格式应为0x开头的十六进制: " + hex);
+		}
+		String str = hex.substring(2, len);
+		int ret = 0;
+		try {
+			ret = Integer.valueOf(str);
+		} catch (NumberFormatException e) {
+			throw new NumberFormatException("格式错误，参数格式应为0x开头的十六进制: " + hex);
+		}
+		return ret;
+	}
+
 	public static void main(String[] args) {
 		String id = Various.genUniqueId();
 		System.out.println(id);

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ajie.res.navigator.Menu;
-import com.ajie.res.navigator.Navigator;
 import com.ajie.res.navigator.NavigatorService;
 import com.ajie.res.user.User;
 import com.ajie.res.user.UserService;
@@ -76,9 +75,8 @@ public class HomeController {
 				user = (User) session.getAttribute(val);
 			}
 		}
-		Navigator nav = navigatorService.getNavigatorByUser(user);
+		List<Menu> menus = navigatorService.getMenus(user);
 		String callback = request.getParameter("callback");
-		List<Menu> menus = nav.getMenus();
 		JSONArray arr = new JSONArray();
 		for (Menu menu : menus) {
 			JSONObject obj = new JSONObject();

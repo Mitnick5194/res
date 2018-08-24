@@ -23,7 +23,7 @@ public class XmlHelper {
 			.getLogger(XmlHelper.class);
 
 	/**
-	 * 将xml加载为io流
+	 * 将xml加载为io流 ，注意，不能在这里关闭流，所以这个方法不太好
 	 * 
 	 * @param xml
 	 * @return
@@ -60,15 +60,6 @@ public class XmlHelper {
 			return in;
 		} catch (FileNotFoundException e) {
 			logger.error(xml + "加载失败：" + Various.printTrace(e));
-		} finally {
-			if (null != in) {
-				try {
-					in.close();
-				} catch (Exception e) {
-					// Ignore
-				}
-
-			}
 		}
 		return null;
 	}

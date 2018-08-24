@@ -72,7 +72,12 @@ public class SimpleUser implements User {
 	/**
 	 * 用户拥有的权限 id集
 	 */
-	protected List<Integer> roles;
+	protected List<Integer> roleIds;
+
+	/**
+	 * 用户拥有的权限
+	 */
+	protected List<Role> roles;
 
 	/** 头像路径 */
 	protected String header;
@@ -101,7 +106,9 @@ public class SimpleUser implements User {
 		this.email = email;
 		this.password = password;
 		createTime = new Date();
+		roleIds = Collections.emptyList();
 		roles = Collections.emptyList();
+
 	}
 
 	public SimpleUser(String id, String name, String email, String password)
@@ -132,6 +139,12 @@ public class SimpleUser implements User {
 		this.synopsis = synopsis;
 		this.sex = sex;
 		this.phone = phone;
+	}
+
+	public SimpleUser(String name, String email, String password,
+			List<Role> roles) throws UserException {
+		this(name, email, password);
+		this.roles = roles;
 	}
 
 	@Override
@@ -247,18 +260,18 @@ public class SimpleUser implements User {
 	}
 
 	@Override
-	public List<Integer> getRoles() {
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	@Override
+	public List<Role> getRoles() {
 		return roles;
 	}
 
 	@Override
-	public void setRoles(List<Integer> role) {
-		this.roles = role;
-	}
-
-	@Override
-	public void addRole(int roleId) {
-		roles.add(roleId);
+	public void addRole(Role role) {
+		roles.add(role);
 	}
 
 	@Override
@@ -316,23 +329,18 @@ public class SimpleUser implements User {
 		if (null == role) {
 			return false;
 		}
-		List<Integer> r = getRoles();
-		if (r.isEmpty()) {
-			return false;
-		}
-		if (r.contains(role.getId())) {
-			return true;
-		}
-		return false;
+		return roles.contains(role);
 	}
 
 	@Override
 	public boolean checkRole(int roleId) {
-		List<Integer> role = getRoles();
-		if (role.isEmpty()) {
-			return false;
+		List<Role> roles = this.roles;
+		for (Role role : roles) {
+			if (role.getId() == roleId) {
+				return true;
+			}
 		}
-		return role.contains(roleId);
+		return false;
 	}
 
 	@Override
@@ -352,4 +360,5 @@ public class SimpleUser implements User {
 		}
 		return password.equals(this.password);
 	}
+
 }

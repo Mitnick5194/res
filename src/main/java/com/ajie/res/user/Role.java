@@ -13,6 +13,11 @@ import com.ajie.res.navigator.Menu;
 public interface Role {
 
 	/**
+	 * 超级用户权限
+	 */
+	public static final int ROLE_SU = 100;
+
+	/**
 	 * 权限id
 	 * 
 	 * @return
@@ -20,25 +25,13 @@ public interface Role {
 	public int getId();
 
 	/**
-	 * 修改权限包含的uri
-	 * 
-	 * @param uris
-	 */
-	public void setUris(List<String> uris);
-
-	/**
 	 * 权限名
 	 * 
 	 * @return
 	 */
-	public String name();
+	public String getName();
 
-	/**
-	 * 权限包含的uri
-	 * 
-	 * @return
-	 */
-	public List<String> getUris();
+	public String getDesc();
 
 	/**
 	 * 获取权限对应的菜单
@@ -46,5 +39,7 @@ public interface Role {
 	 * @return
 	 */
 	public List<Menu> getMenus();
+
+	public void setMenus(List<Menu> menus);
 
 }

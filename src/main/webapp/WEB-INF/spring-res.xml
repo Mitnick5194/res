@@ -34,7 +34,8 @@
 
 	<bean id="userService" class="com.ajie.res.user.impl.UserServiceImpl">
 		<property name="navigatorService" ref="navigatorService" />
-		<property name="userData" value="users.xml" />
+		<property name="rolesData" value="role.xml" />
+		<property name="usersData" value="user.xml" />
 	</bean>
 
 </beans>

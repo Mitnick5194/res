@@ -114,12 +114,11 @@ public class RequestFilter implements Filter {
 			return;
 		}
 		// 验证权限
-		Role role = menu.getRole();
-		List<Integer> roles = user.getRoles();
-		int roleId = role.getId();
+		List<Role> roles = user.getRoles();
 		boolean hasRole = false;
-		for (int rid : roles) {
-			if (roleId == rid) {
+		for (Role r : roles) {
+			List<Menu> m = r.getMenus();
+			if (m.contains(menu)) {
 				hasRole = true;
 				break;
 			}

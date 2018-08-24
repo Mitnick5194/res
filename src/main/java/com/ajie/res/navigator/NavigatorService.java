@@ -12,23 +12,6 @@ import com.ajie.res.user.User;
 public interface NavigatorService {
 
 	/**
-	 * 根据传入的用户，返回该用户有权限访问的菜单
-	 * 
-	 * @param user
-	 * @return
-	 */
-	@SuppressWarnings("deprecation")
-	Navigator getNavigatorByUser(User user);
-
-	/**
-	 * 包含全部菜单的导航
-	 * 
-	 * @return
-	 */
-	@SuppressWarnings("deprecation")
-	Navigator getNavigator();
-
-	/**
 	 * 根据uri返回所属菜单
 	 * 
 	 * @param uri
@@ -43,4 +26,8 @@ public interface NavigatorService {
 	 * @return
 	 */
 	List<Menu> getMenus(User user);
+
+	List<Menu> getMenus();
+	
+	public Menu getMenuById(int id);
 }

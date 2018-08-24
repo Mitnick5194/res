@@ -1,6 +1,5 @@
 package com.ajie.res.user;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +14,6 @@ import com.ajie.res.user.exception.UserException;
  * @author niezhenjie
  */
 public interface UserService {
-
-	void setUserData(String xml) throws IOException;
 
 	public List<User> getUsers();
 
@@ -34,9 +31,9 @@ public interface UserService {
 
 	HttpSession putUserIntoSession(User user, HttpServletRequest request,
 			HttpServletResponse response) throws UserException;
-	
+
 	User getUserBySession(HttpServletRequest request);
 
-//	User getUserById(String name);
+	// User getUserById(String name);
 
 }

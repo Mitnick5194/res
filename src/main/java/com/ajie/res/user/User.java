@@ -129,7 +129,7 @@ public interface User {
 	 * 
 	 * @return
 	 */
-	List<Integer> getRoles();
+	List<Role> getRoles();
 
 	/**
 	 * 用户是否有指定的权限
@@ -179,14 +179,7 @@ public interface User {
 	 * 
 	 * @param role
 	 */
-	void setRoles(List<Integer> role);
-
-	/**
-	 * 增加权限
-	 * 
-	 * @param role
-	 */
-	void addRole(int roleId);
+	void setRoles(List<Role> roles);
 
 	/**
 	 * 设置手机号
@@ -219,14 +212,6 @@ public interface User {
 	boolean checkRole(Role role);
 
 	/**
-	 * 用户是否有指定权限
-	 * 
-	 * @param role
-	 * @return
-	 */
-	boolean checkRole(int roleId);
-
-	/**
 	 * 修改头像路径
 	 * 
 	 * @param header
@@ -246,5 +231,20 @@ public interface User {
 	 * @return
 	 */
 	boolean vertifyLogin(String password);
-	
+
+	/**
+	 * 增加权限
+	 * 
+	 * @param role
+	 */
+	void addRole(Role role);
+
+	/**
+	 * 检查是否有权限
+	 * 
+	 * @param roleId
+	 * @return
+	 */
+	boolean checkRole(int roleId);
+
 }

@@ -12,6 +12,7 @@ import com.ajie.res.user.User;
  * 
  * @author niezhenjie
  */
+@SuppressWarnings("deprecation")
 public class BaseNavigator implements Navigator {
 
 	/** 导航条包含的菜单 */

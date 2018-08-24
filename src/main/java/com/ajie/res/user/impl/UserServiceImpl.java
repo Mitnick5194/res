@@ -1,7 +1,6 @@
 package com.ajie.res.user.impl;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -13,17 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ajie.common.ConstantPool;
+import com.ajie.res.navigator.Menu;
 import com.ajie.res.navigator.NavigatorService;
+import com.ajie.res.user.Role;
 import com.ajie.res.user.User;
 import com.ajie.res.user.UserService;
 import com.ajie.res.user.exception.UserException;
+import com.ajie.res.user.simple.SimpleRole;
 import com.ajie.res.user.simple.SimpleUser;
 import com.ajie.utils.cache.Cache;
 import com.ajie.utils.cache.MapCache;
@@ -44,6 +44,16 @@ public class UserServiceImpl implements UserService {
 	protected List<User> users;
 
 	/**
+	 * 权限表
+	 */
+	protected List<Role> roles;
+
+	public UserServiceImpl() {
+		users = new ArrayList<User>();
+		roles = new ArrayList<Role>();
+	}
+
+	/**
 	 * 用户数据缓存
 	 */
 	private static Cache<String, User> userCache = new MapCache<String, User>(
@@ -55,22 +65,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	protected void load(String xmlFile) throws IOException {
-		InputStream is = XmlHelper.parseInputStream(xmlFile);
-		if (null == is) {
+		Document doc = XmlHelper.parseDocument(xmlFile);
+		if (null == doc) {
 			logger.error(xmlFile + "配置文件加载失败");
 			return;
 		}
-		parse(is);
+		parse(doc);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void parse(InputStream in) {
-		SAXReader reader = new SAXReader();
+	protected void parse(Document doc) {
 		List<User> userList = new ArrayList<User>();
-		Document doc = null;
 		String setter = null;
 		try {
-			doc = reader.read(in);
 			Element root = doc.getRootElement();
 			List<Element> users = root.elements("user");
 			for (Element ele : users) {
@@ -85,24 +92,34 @@ public class UserServiceImpl implements UserService {
 					String setterName = el.attributeValue("name");
 					String value = el.attributeValue("value");
 					setter = getSetter(setterName);
-					// value为空 ？ 可能是多个value 只有权限有传入多个值
+					// value为空 ？ 可能多个value 只有权限有传入多个值
+					List<Role> roles = new ArrayList<Role>();
+					user.setRoles(roles);
 					if (null == value) {
 						List<Element> values = el.elements("value");
-						List<Integer> vals = new ArrayList<Integer>(
-								values.size());
 						if (null != values) {
 							for (Element e : values) {
 								try {
-									int roleId = Integer.parseInt(e
+									int roleId = Various.Hex2Deci(e
 											.getTextTrim());
-									vals.add(roleId);
+									if (this.roles.size() == 0) {
+										break;
+									}
+									for (Role r : this.roles) {
+										if (null == r) {
+											continue;
+										}
+										if (r.getId() == roleId) {
+											roles.add(r);
+											break;
+										}
+									}
 								} catch (Exception e2) {
-									logger.error("权限格式错误，必须为数字类型： "
-											+ e.getTextTrim());
+									logger.error("无效权限id: " + e.getTextTrim());
+									continue;
 								}
+
 							}
-							Method method = getMethod(user, setter, List.class);
-							method.invoke(user, vals);
 						}
 					} else {
 						Method method = getMethod(user, setter, String.class);
@@ -124,8 +141,6 @@ public class UserServiceImpl implements UserService {
 		} catch (InvocationTargetException ex) {
 			logger.error("反射调用setter出错 setter:" + setter + " "
 					+ Various.printTrace(ex));
-		} catch (DocumentException ex) {
-			logger.error("Document解析失败\r\n " + Various.printTrace(ex));
 		}
 	}
 
@@ -233,8 +248,7 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
-	@Override
-	public void setUserData(String xml) throws IOException {
+	public void setUsersData(String xml) throws IOException {
 		synchronized (lock) {
 			if (null == xml) {
 				return;
@@ -242,5 +256,71 @@ public class UserServiceImpl implements UserService {
 			load(xml);
 
 		}
+	}
+
+	public void setRolesData(String xml) throws IOException {
+		synchronized (lock) {
+			if (null == xml) {
+				return;
+			}
+			loadRole(xml);
+
+		}
+	}
+
+	public void loadRole(String path) throws IOException {
+		Document doc = XmlHelper.parseDocument(path);
+		if (null == doc) {
+			logger.error(path + "配置文件加载失败");
+			return;
+		}
+		parseRoles(doc);
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public void parseRoles(Document doc) {
+		List<Role> roles = new ArrayList<Role>();
+		Element root = doc.getRootElement();
+		List<Element> rolesEle = root.elements("role");
+		for (Element ele : rolesEle) {
+			String idstr = ele.attributeValue("id");
+			int id = 0;
+			try {
+				id = Various.Hex2Deci(idstr);
+			} catch (Exception e) {
+				logger.error("权限id格式错误，应为0x开头十六进制形式：" + idstr);
+				continue;
+			}
+
+			String name = ele.attributeValue("name");
+			String desc = ele.attributeValue("desc");
+			Role role = new SimpleRole(id, name, desc);
+			roles.add(role);
+			List<Menu> menus = new ArrayList<Menu>();
+			if (id == Role.ROLE_SU) {
+				menus = navigatorService.getMenus();
+				role.setMenus(menus);
+				continue;
+			}
+			List<Element> values = ele.elements("values");
+		//	List<Element> values = menusEle.get(0).elements("value");
+			for (Element value : values) {
+				String s = value.getTextTrim();
+				int menuId = -1;
+				try {
+					menuId = Various.Hex2Deci(s);
+				} catch (NumberFormatException e) {
+					logger.error("无效menu id:" + s);
+					continue;
+				}
+				Menu menu = navigatorService.getMenuById(menuId);
+				menus.add(menu);
+			}
+			role.setMenus(menus);
+		}
+		this.roles = roles;
+		logger.info("已从配置文件中初始化了用户数据");
+
 	}
 }
