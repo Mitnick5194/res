@@ -84,7 +84,7 @@ public class Various {
 		String str = hex.substring(2, len);
 		int ret = 0;
 		try {
-			ret = Integer.valueOf(str);
+			ret = Integer.valueOf(str, 16);
 		} catch (NumberFormatException e) {
 			throw new NumberFormatException("格式错误，参数格式应为0x开头的十六进制: " + hex);
 		}
@@ -92,8 +92,11 @@ public class Various {
 	}
 
 	public static void main(String[] args) {
-		String id = Various.genUniqueId();
-		System.out.println(id);
-		System.out.println(id.length());
+		/*
+		 * String id = Various.genUniqueId(); System.out.println(id);
+		 * System.out.println(id.length());
+		 */
+		int i = Various.Hex2Deci("0x100");
+		System.out.println(i);
 	}
 }

@@ -298,13 +298,14 @@ public class UserServiceImpl implements UserService {
 			Role role = new SimpleRole(id, name, desc);
 			roles.add(role);
 			List<Menu> menus = new ArrayList<Menu>();
+			role.setMenus(menus);
 			if (id == Role.ROLE_SU) {
 				menus = navigatorService.getMenus();
-				role.setMenus(menus);
+				role.setMenus(menus);// 返回新的对象，这里的menus对象的地址和上述的已经不一致了，所以需要在set一次
 				continue;
 			}
-			List<Element> values = ele.elements("values");
-		//	List<Element> values = menusEle.get(0).elements("value");
+			Element el = ele.element("menus");
+			List<Element> values = el.elements("value");
 			for (Element value : values) {
 				String s = value.getTextTrim();
 				int menuId = -1;
@@ -317,7 +318,6 @@ public class UserServiceImpl implements UserService {
 				Menu menu = navigatorService.getMenuById(menuId);
 				menus.add(menu);
 			}
-			role.setMenus(menus);
 		}
 		this.roles = roles;
 		logger.info("已从配置文件中初始化了用户数据");

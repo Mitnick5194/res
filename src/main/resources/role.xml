@@ -4,7 +4,6 @@
 	</role>
 	<role id="0x101" name="loginer" desc="登录者">
 		<menus>
-			<value>0x01</value>
 			<value>0x02</value>
 			<value>0x03</value>
 			<value>0x04</value>
@@ -14,7 +13,6 @@
 	</role>
 	<role id="0x102" name="passager" desc="游客">
 		<menus>
-			<value>0x01</value>
 			<value>0x02</value>
 			<value>0x03</value>
 			<value>0x04</value>

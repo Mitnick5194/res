@@ -15,7 +15,7 @@ public interface Role {
 	/**
 	 * 超级用户权限
 	 */
-	public static final int ROLE_SU = 100;
+	public static final int ROLE_SU = 0x100;
 
 	/**
 	 * 权限id
