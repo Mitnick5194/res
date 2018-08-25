@@ -2,6 +2,7 @@ package com.ajie.res.navigator.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.dom4j.Document;
@@ -19,8 +20,7 @@ import com.ajie.utils.common.XmlHelper;
  * @author niezhenjie
  */
 public class NavigatorServiceImpl implements NavigatorService {
-	private static final Logger logger = LoggerFactory
-			.getLogger(NavigatorServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(NavigatorServiceImpl.class);
 
 	/** 所有的菜单，从配置文件中初始化进来 */
 	protected List<Menu> menus;
@@ -116,8 +116,11 @@ public class NavigatorServiceImpl implements NavigatorService {
 			if (m == null) {
 				continue;
 			}
-			if (roles.contains(m)) {
-				list.add(m);
+			for (Role r : roles) {
+				List<Menu> roleMenu = r.getMenus();
+				if (roleMenu.contains(m)) {
+					list.add(m);
+				}
 			}
 		}
 		return list;
@@ -139,5 +142,14 @@ public class NavigatorServiceImpl implements NavigatorService {
 			}
 		}
 		return null;
+	}
+
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<String>();
+		if (list == Collections.EMPTY_LIST) {
+			list = new ArrayList<String>();
+		}
+		list.add("asdf");
+		System.out.println(list.size());
 	}
 }

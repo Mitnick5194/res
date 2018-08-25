@@ -1,5 +1,6 @@
 package com.ajie.res.user.simple;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -91,8 +92,7 @@ public class SimpleUser implements User {
 
 	}
 
-	public SimpleUser(String name, String email, String password)
-			throws UserException {
+	public SimpleUser(String name, String email, String password) throws UserException {
 		if (null == name) {
 			throw new UserException("用户名不能为空");
 		}
@@ -111,8 +111,7 @@ public class SimpleUser implements User {
 
 	}
 
-	public SimpleUser(String id, String name, String email, String password)
-			throws UserException {
+	public SimpleUser(String id, String name, String email, String password) throws UserException {
 		if (null == id) {
 			throw new UserException("id不能为空");
 		}
@@ -133,16 +132,16 @@ public class SimpleUser implements User {
 		roles = Collections.emptyList();
 	}
 
-	public SimpleUser(String name, String email, String password,
-			String synopsis, int sex, String phone) throws UserException {
+	public SimpleUser(String name, String email, String password, String synopsis, int sex,
+			String phone) throws UserException {
 		this(name, email, password);
 		this.synopsis = synopsis;
 		this.sex = sex;
 		this.phone = phone;
 	}
 
-	public SimpleUser(String name, String email, String password,
-			List<Role> roles) throws UserException {
+	public SimpleUser(String name, String email, String password, List<Role> roles)
+			throws UserException {
 		this(name, email, password);
 		this.roles = roles;
 	}
@@ -271,6 +270,9 @@ public class SimpleUser implements User {
 
 	@Override
 	public void addRole(Role role) {
+		if (Collections.EMPTY_LIST == roles) {
+			roles = new ArrayList<Role>();
+		}
 		roles.add(role);
 	}
 
