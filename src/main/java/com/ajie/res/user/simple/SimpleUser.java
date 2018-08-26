@@ -1,38 +1,35 @@
 package com.ajie.res.user.simple;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ajie.res.user.Role;
 import com.ajie.res.user.User;
 import com.ajie.res.user.enums.SexEnum;
 import com.ajie.res.user.exception.UserException;
+import com.ajie.utils.common.StringUtil;
+import com.ajie.utils.common.Various;
 
 /**
  * @author niezhenjie
  */
-public class SimpleUser implements User {
-
-	/**
-	 * 唯一id
+public class SimpleUser extends AbstractUser {
+	private static final Logger logger = LoggerFactory
+			.getLogger(SimpleUser.class);
+	/*
+	 * MD5密码
 	 */
-	protected String id;
-
-	/**
-	 * 用户名
-	 */
-	protected String name;
+	protected String password;
 
 	/**
 	 * 用户昵称
 	 */
 	protected String nickName;
-
-	/**
-	 * 登录密码（MD5加密）
-	 */
-	protected String password;
 
 	/**
 	 * 简介
@@ -50,34 +47,9 @@ public class SimpleUser implements User {
 	protected String phone;
 
 	/**
-	 * 邮箱
+	 * 保存进数据库的权限id集
 	 */
-	protected String email;
-
-	/**
-	 * 创建时间
-	 */
-	protected Date createTime;
-
-	/**
-	 * 最后活跃时间
-	 */
-	protected Date lastActive;
-
-	/**
-	 * 登录token
-	 */
-	protected String loginToken;
-
-	/**
-	 * 用户拥有的权限 id集
-	 */
-	protected List<Integer> roleIds;
-
-	/**
-	 * 用户拥有的权限
-	 */
-	protected List<Role> roles;
+	protected String roleIdStr;
 
 	/** 头像路径 */
 	protected String header;
@@ -91,6 +63,14 @@ public class SimpleUser implements User {
 
 	}
 
+	/**
+	 * 通过用户名，密码，邮箱构造一个用户，默认权限为登陆者
+	 * 
+	 * @param name
+	 * @param email
+	 * @param password
+	 * @throws UserException
+	 */
 	public SimpleUser(String name, String email, String password)
 			throws UserException {
 		if (null == name) {
@@ -104,9 +84,9 @@ public class SimpleUser implements User {
 		}
 		this.name = name;
 		this.email = email;
-		this.password = password;
+		this.password = Various.md5Password(password);
 		createTime = new Date();
-		roleIds = Collections.emptyList();
+		roleIdStr = String.valueOf(Role.ROLE_LOGINER);
 		roles = Collections.emptyList();
 
 	}
@@ -128,7 +108,8 @@ public class SimpleUser implements User {
 		this.id = id;
 		this.name = name;
 		this.email = email;
-		this.password = password;
+		this.password = Various.md5Password(password);
+		;
 		createTime = new Date();
 		roles = Collections.emptyList();
 	}
@@ -147,24 +128,22 @@ public class SimpleUser implements User {
 		this.roles = roles;
 	}
 
-	@Override
-	public String getId() {
-		return id;
+	/**
+	 * 设置密码（供内部调用）
+	 * 
+	 * @param password
+	 */
+	protected void setPassword(String MD5password) {
+		this.password = MD5password;
 	}
 
 	@Override
-	public String getName() {
-		return name;
-	}
-
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public void setPassword(String password) {
-		this.password = password;
+	public void changePassword(String oldPassword, String newPassword)
+			throws UserException {
+		if (!vertifyPassword(oldPassword)) {
+			throw new UserException("原密码错误");
+		}
+		setPassword(Various.md5Password(newPassword));
 	}
 
 	@Override
@@ -208,25 +187,7 @@ public class SimpleUser implements User {
 	}
 
 	@Override
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	@Override
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	@Override
-	public Date getLastActive() {
-		return lastActive;
-	}
-
-	public void modifyLastActive() {
+	public void updateLastActive() {
 		lastActive = new Date();
 	}
 
@@ -261,22 +222,71 @@ public class SimpleUser implements User {
 
 	@Override
 	public void setRoles(List<Role> roles) {
+		if (null == roles) {
+			return;
+		}
+		if (roles.size() == 0) {
+			return;
+		}
+		StringBuilder sb = new StringBuilder();
+		for (Role r : roles) {
+			sb.append(r.getId());
+			sb.append(Role.ID_SPERATOR);
+		}
+		// 取出最后一个 ","
+		String ret = sb.toString();
+		ret = ret.substring(0, ret.length() - 1);
+		this.roleIdStr = ret;
 		this.roles = roles;
 	}
 
 	@Override
 	public List<Role> getRoles() {
+		if (roles != Collections.EMPTY_LIST) {
+			return roles;
+		}
+		roles = new ArrayList<Role>();
+		List<Integer> roleIds = splitRoleIds();
+		synchronized (roles) {
+			List<Role> roleTable = Role.roleTable;
+			for (int roleId : roleIds) {
+				for (Role role : roleTable) {
+					if (roleId == role.getId()) {
+						roles.add(role);
+					}
+				}
+			}
+
+		}
 		return roles;
+	}
+
+	protected List<Integer> splitRoleIds() {
+		if (StringUtil.isEmpty(roleIdStr)) {
+			return Collections.emptyList();
+		}
+		String[] ids = roleIdStr.split(Role.ID_SPERATOR);
+		List<Integer> list = new ArrayList<Integer>(ids.length);
+		for (String sid : ids) {
+			try {
+				int id = Integer.valueOf(sid);
+				list.add(id);
+			} catch (NumberFormatException e) {
+				logger.error("无效权限id：" + sid);
+			}
+
+		}
+		return list;
 	}
 
 	@Override
 	public void addRole(Role role) {
-		roles.add(role);
-	}
-
-	@Override
-	public boolean isContainRole(int role) {
-		return roles.contains(role);
+		if (null == role) {
+			return;
+		}
+		getRoles().add(role);
+		int roleId = role.getId();
+		roleIdStr += Role.ID_SPERATOR + roleId;
 	}
 
 	@Override
@@ -308,35 +318,18 @@ public class SimpleUser implements User {
 		return mark == (mark & this.mark);
 	}
 
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("{id: ").append(id);
-		sb.append(" , name: ").append(name);
-		sb.append(" , email: ").append(email);
-		sb.append(" , phone: ").append(phone);
-		sb.append(" , nickName: ").append(nickName);
-		sb.append(" , sex: ").append(getSex().name());
-		sb.append(" , createTime: ").append(createTime);
-		sb.append(" , lastActive: ").append(lastActive);
-		sb.append(" , roles: ").append(roles.toString());
-		sb.append("}");
-		return sb.toString();
-
-	}
-
 	@Override
 	public boolean checkRole(Role role) {
 		if (null == role) {
 			return false;
 		}
-		return roles.contains(role);
+		return checkRole(role.getId());
 	}
 
 	@Override
 	public boolean checkRole(int roleId) {
-		List<Role> roles = this.roles;
-		for (Role role : roles) {
-			if (role.getId() == roleId) {
+		for (Role r : roles) {
+			if (r.getId() == roleId) {
 				return true;
 			}
 		}
@@ -353,12 +346,28 @@ public class SimpleUser implements User {
 		return header;
 	}
 
-	@Override
-	public boolean vertifyLogin(String password) {
-		if (null == password || password.length() < 1) {
-			return false;
+	public boolean vertifyPassword(String password) throws UserException {
+		if (StringUtil.isEmpty(password)) {
+			throw new UserException("密码不能为空");
 		}
-		return password.equals(this.password);
+		return Various.md5Password(this.password).equals(
+				Various.md5Password(password));
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{id: ").append(id);
+		sb.append(" , name: ").append(name);
+		sb.append(" , email: ").append(email);
+		sb.append(" , phone: ").append(phone);
+		sb.append(" , nickName: ").append(nickName);
+		sb.append(" , sex: ").append(getSex().name());
+		sb.append(" , createTime: ").append(createTime);
+		sb.append(" , lastActive: ").append(lastActive);
+		sb.append(" , roles: ").append(roleIdStr);
+		sb.append("}");
+		return sb.toString();
+
 	}
 
 }

@@ -24,7 +24,7 @@ import com.ajie.res.user.User;
 import com.ajie.res.user.UserService;
 import com.ajie.res.user.exception.UserException;
 import com.ajie.res.user.simple.SimpleRole;
-import com.ajie.res.user.simple.SimpleUser;
+import com.ajie.res.user.simple.XmlUser;
 import com.ajie.utils.cache.Cache;
 import com.ajie.utils.cache.MapCache;
 import com.ajie.utils.common.Various;
@@ -43,14 +43,8 @@ public class UserServiceImpl implements UserService {
 	 */
 	protected List<User> users;
 
-	/**
-	 * 权限表
-	 */
-	protected List<Role> roles;
-
 	public UserServiceImpl() {
 		users = new ArrayList<User>();
-		roles = new ArrayList<Role>();
 	}
 
 	/**
@@ -74,9 +68,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void parse(Document doc) {
+	protected synchronized void parse(Document doc) {
 		List<User> userList = new ArrayList<User>();
 		String setter = null;
+		List<Role> roleTable = Role.roleTable;
 		try {
 			Element root = doc.getRootElement();
 			List<Element> users = root.elements("user");
@@ -84,28 +79,29 @@ public class UserServiceImpl implements UserService {
 				String id = ele.attributeValue("id");
 				String username = ele.attributeValue("name");
 				String password = ele.attributeValue("password");
-				User user = new SimpleUser(id, username, "", password);
-				userCache.put(id, user);
+				User user = new XmlUser(id, username, password);
+				//userCache.put(id, user);
 				List<Element> propeties = ele.elements("property");
 				// 从配置中获取属性并通过setter设置进去
 				for (Element el : propeties) {
 					String setterName = el.attributeValue("name");
 					String value = el.attributeValue("value");
 					setter = getSetter(setterName);
-					// value为空 ？ 可能多个value 只有权限有传入多个值
-					List<Role> roles = new ArrayList<Role>();
-					user.setRoles(roles);
+					
 					if (null == value) {
+						// value为空 ？ 可能多个value 只有权限有传入多个值
+						List<Role> roles = new ArrayList<Role>();
+						user.setRoles(roles);
 						List<Element> values = el.elements("value");
 						if (null != values) {
 							for (Element e : values) {
 								try {
 									int roleId = Various.Hex2Deci(e
 											.getTextTrim());
-									if (this.roles.size() == 0) {
+									if (roleTable.size() == 0) {
 										break;
 									}
-									for (Role r : this.roles) {
+									for (Role r : roleTable) {
 										if (null == r) {
 											continue;
 										}
@@ -130,8 +126,6 @@ public class UserServiceImpl implements UserService {
 			}
 			this.users = userList;
 			logger.info("已从配置文件中初始化了用户数据");
-		} catch (UserException ex) {
-			logger.warn("构造User对象出错" + Various.printTrace(ex));
 		} catch (IllegalAccessException ex) {
 			logger.error("反射调用setter出错setter:" + setter + " , "
 					+ Various.printTrace(ex));
@@ -185,25 +179,32 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User login(String name, String password) throws UserException {
+		// 先从配置文件里读取 没有在从数据库读取
 		List<User> users = this.users;
 		if (null == users) {
-			throw new UserException("登录失败，用户不存在");
+			loginExt(name, password);
 		}
-		boolean flag = false;
 		for (User user : users) {
 			if (user.getName().equals(name) || user.getId().equals(name)
 					|| user.getEmail().equals(name)) {
-				flag = true;
-				if (user.vertifyLogin(password)) {
+				if (user.vertifyPassword(password)) {
 					return user;
 				}
 			}
 		}
-		if (flag) {
-			throw new UserException("登录失败，密码错误");
-		} else {
-			throw new UserException("登录失败，用户不存在");
-		}
+		return loginExt(name, password);
+	}
+
+	/**
+	 * 数据库里读取用户信息
+	 * 
+	 * @param name
+	 * @param password
+	 * @return
+	 * @throws UserException
+	 */
+	protected User loginExt(String name, String password){
+		throw new UnsupportedOperationException("未支持服务");
 	}
 
 	@Override
@@ -279,8 +280,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void parseRoles(Document doc) {
-		List<Role> roles = new ArrayList<Role>();
+	public synchronized void parseRoles(Document doc) {
+		List<Role> roles = Role.roleTable;
 		Element root = doc.getRootElement();
 		List<Element> rolesEle = root.elements("role");
 		for (Element ele : rolesEle) {
@@ -319,7 +320,6 @@ public class UserServiceImpl implements UserService {
 				menus.add(menu);
 			}
 		}
-		this.roles = roles;
 		logger.info("已从配置文件中初始化了用户数据");
 
 	}

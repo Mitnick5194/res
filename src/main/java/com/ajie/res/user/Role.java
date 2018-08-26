@@ -1,5 +1,6 @@
 package com.ajie.res.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ajie.res.navigator.Menu;
@@ -12,10 +13,33 @@ import com.ajie.res.navigator.Menu;
  */
 public interface Role {
 
+	public static List<Role> roleTable = new ArrayList<Role>();
+
 	/**
 	 * 超级用户权限
 	 */
-	public static final int ROLE_SU = 0x100;
+	public static final int ROLE_SU = 0x1000;
+
+	/**
+	 * 管理员
+	 */
+	public static final int ROLE_ADMIN = 0x1001;
+
+	/**
+	 * 登陆者权限
+	 */
+	public static final int ROLE_LOGINER = 0x101;
+	
+	/**
+	 * 登陆者权限
+	 */
+	public static final int ROLE_PASSAGER = 0x102;
+
+
+	/**
+	 * 保存到数据库时权限id的分隔符
+	 */
+	public static final String ID_SPERATOR = ",";
 
 	/**
 	 * 权限id

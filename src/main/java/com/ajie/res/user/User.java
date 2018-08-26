@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.ajie.res.user.enums.SexEnum;
+import com.ajie.res.user.exception.UserException;
 
 /**
  * @author niezhenjie
@@ -81,6 +82,11 @@ public interface User {
 	String getEmail();
 
 	/**
+	 * 设置用户邮箱
+	 */
+	void setEmail(String email);
+
+	/**
 	 * 用户创建时间
 	 * 
 	 * @return
@@ -140,6 +146,14 @@ public interface User {
 	boolean isContainRole(int roleId);
 
 	/**
+	 * 用户是否有指定的权限
+	 * 
+	 * @param role
+	 * @return
+	 */
+	boolean isContainRole(Role role);
+
+	/**
 	 * 是否为管理员
 	 * 
 	 * @return
@@ -147,11 +161,13 @@ public interface User {
 	boolean isAdmin();
 
 	/**
-	 * 设置密码
+	 * 修改密码
 	 * 
-	 * @param password
+	 * @param oldPassword
+	 * @param newPassword
 	 */
-	void setPassword(String password);
+	void changePassword(String oldPassword, String newPassword)
+			throws UserException;
 
 	/**
 	 * 设置姓名
@@ -230,7 +246,7 @@ public interface User {
 	 * 
 	 * @return
 	 */
-	boolean vertifyLogin(String password);
+	boolean vertifyPassword(String password) throws UserException;
 
 	/**
 	 * 增加权限
@@ -246,5 +262,9 @@ public interface User {
 	 * @return
 	 */
 	boolean checkRole(int roleId);
+
+	void updateLastActive();
+
+	void logout();
 
 }

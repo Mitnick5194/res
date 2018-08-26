@@ -3,7 +3,7 @@
 	<user id="1" name="ajie" password="ajie">
 		<property name="email" value="1149023676@qq.com" />
 		<property name="roles">
-			<value>0x100</value>
+			<value>0x1000</value>
 		</property>
 	</user>
 	<user id="2" name="mitnick" password="ajie">
