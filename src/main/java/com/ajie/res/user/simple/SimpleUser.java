@@ -91,8 +91,7 @@ public class SimpleUser extends AbstractUser {
 
 	}
 
-	public SimpleUser(String id, String name, String email, String password)
-			throws UserException {
+	public SimpleUser(String id, String name, String email, String password) throws UserException {
 		if (null == id) {
 			throw new UserException("id不能为空");
 		}
@@ -114,16 +113,16 @@ public class SimpleUser extends AbstractUser {
 		roles = Collections.emptyList();
 	}
 
-	public SimpleUser(String name, String email, String password,
-			String synopsis, int sex, String phone) throws UserException {
+	public SimpleUser(String name, String email, String password, String synopsis, int sex,
+			String phone) throws UserException {
 		this(name, email, password);
 		this.synopsis = synopsis;
 		this.sex = sex;
 		this.phone = phone;
 	}
 
-	public SimpleUser(String name, String email, String password,
-			List<Role> roles) throws UserException {
+	public SimpleUser(String name, String email, String password, List<Role> roles)
+			throws UserException {
 		this(name, email, password);
 		this.roles = roles;
 	}
