@@ -80,10 +80,9 @@ html, body {
 
 .container {
 	position: relative;
-	margin-top: 15px; text-align : center;
+	margin-top: 15px; 
 	left: 0;
 	transition: all .25s ease-out;
-	text-align: center;
 }
 
 .container.active {
@@ -175,3 +174,23 @@ html, body {
 	}
 }
 
+/* 博客内容 */
+.content-dv{
+	padding: 0 10px;
+}
+
+.content-dv p{
+	margin-bottom: 10px;
+}
+
+.content-dv-title{
+	padding: 10px 0;
+}
+.content-dv-title a{
+	padding: 10px 0;
+	color: #3d3d3d;
+}
+
+.cl78{
+	color:#787878;
+}
