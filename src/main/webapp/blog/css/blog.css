@@ -129,54 +129,12 @@ html, body {
 }
 
 
-/* 响应各种屏幕 */
-@media screen and (min-width: 768px) {
-	.nav {
-		width: 750px;
-		background: red;
-	}
-}
-
-@media screen and (min-width: 992px) {
-	.nav {
-		width: 970px;
-		background-color: #eee;
-	}
-}
-
-@media screen and (min-width: 1200px) {
-	.min-width-client-header {
-		display: none;
-	}
-	.nav {
-		width: calc(100% - 120px);
-		width: -webkit-calc(100% - 120px);
-		background-color: #eee;
-	}
-	.container {
-		width: 1170px;
-		display: flex;
-	}
-	.left-tag {
-		width: 200px;
-		position: unset;
-	}
-	.right-info {
-		width: 200px;
-		float: right;
-		display: inline-block;
-	}
-	.center-main {
-		width: calc(100% - 400px);
-	}
-	.btn-nav {
-		margin-right: 25px;
-	}
-}
+/* 桌面屏幕 结束*/
 
 /* 博客内容 */
 .content-dv{
-	padding: 0 20px;
+	padding: 20px;
+	border-bottom:1px solid #eee;
 }
 
 
@@ -231,10 +189,13 @@ html, body {
     margin: 0 5px
 }
 
+.list-userbar .interactive {
+	display: none;
+}
+
 .interactive a{
 	line-height: 25px;
 	text-align: center ; 
-	display: inline-block
 }
 
 .interactive .interval {
@@ -245,7 +206,13 @@ html, body {
 .col-gray {
 	color: #8a8a8a
 }
-
+    
+.list-userbar .tag{
+	width: 80px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
 .list-userbar .tag a{
 	color: #3399ea;
 }
@@ -260,4 +227,142 @@ html, body {
 }
 .interactive a:hover{
 	color: #157dcf
+}
+
+/* 右侧 */
+.right-info {
+	padding: 30px 0px;
+}
+.login-part {
+	padding: 10px;
+	margin:0 5px;
+	border: 1px solid #d5dce5;
+}
+
+.user-info h2{
+	margin: 0;
+    position: relative;
+    color: #4d5e73;
+    margin-bottom: 15px;
+}
+
+.user-info input[type="text"] , .user-info input[type="password"]{
+    background: #fff;
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    border: 1px solid #d5dce5;
+    font-weight: normal;
+    text-indent: 23px;
+    outline: 0;
+    border-radius: 3px;
+}
+
+.user-info input[type=text]{
+	margin-bottom: 20px;
+}
+
+.forget-password{
+	margin-top: 10px;
+}
+.rememberMe-label{
+	padding: 0 10px;
+	-moz-user-select:none;/*火狐*/
+   -webkit-user-select:none;/*webkit浏览器*/
+   -ms-user-select:none;/*IE10*/
+   -khtml-user-select:none;/*早期浏览器*/
+   user-select:none;
+}
+
+.forget-password-sp{
+	float: right;
+}
+.forget-password-sp a{
+	text-decoration: none;
+	color: #4d5e73;
+}
+
+.forget-password-sp a:hover{
+	text-decoration: underline;
+}
+
+.loginBtn {
+	padding: 10px 5px;
+    background: #337ab7;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 18px;
+    color: #fff;
+    margin-top:15px;
+}
+
+.register-dv {
+	margin-top: 10px;	
+}
+.register-dv a {
+	color: #4d5e73;
+}
+
+.register-dv a:hover {
+	text-decoration: underline;
+}
+
+
+
+/* 响应各种屏幕 */
+/* 平板居多屏幕 */
+@media screen and (min-width: 768px) {
+	.nav {
+		width: 750px;
+		background: red;
+	}
+}
+/* 平板居多屏幕 结束*/
+
+/* 小分辨率桌面屏幕 */
+@media screen and (min-width: 992px) {
+	.nav {
+		width: 970px;
+		background-color: #eee;
+	}
+}
+/* 小分辨率桌面 结束*/
+
+/* 桌面屏幕 */
+@media screen and (min-width: 1200px) {
+	.min-width-client-header {
+		display: none;
+	}
+	.nav {
+		width: calc(100% - 120px);
+		width: -webkit-calc(100% - 120px);
+		background-color: #eee;
+	}
+	.container {
+		width: 1170px;
+		display: flex;
+	}
+	.left-tag {
+		width: 200px;
+		position: unset;
+	}
+	.right-info {
+		width: 300px;
+		float: right;
+		display: inline-block;
+	}
+	.center-main {
+		width: calc(100% - 500px);
+		width: -webkit-calc(100% - 500px);
+	}
+	.btn-nav {
+		margin-right: 25px;
+	}
+	.list-userbar .interactive {
+		display: inline-block;
+	}
+	.list-userbar .tag{
+		width: auto;
+		max-width: 250px;
+	}
 }
