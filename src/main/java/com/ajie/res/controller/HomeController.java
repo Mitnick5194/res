@@ -7,7 +7,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,28 +52,6 @@ public class HomeController {
 		setAjaxContentType(response);
 		PrintWriter out = response.getWriter();
 		User user = userService.getUserBySession(request);
-		if (null == user) {
-			// 因jsonp不能吧页面的cookie带过来，所以无法正常的从cookie中获取sessiond key 所要在
-			// js中吧全部的cookie传过来 在分析
-			String cookies = request.getParameter("cookies");
-			String[] cookie = cookies.split(";");
-			for (String c : cookie) {
-				if (c.length() < 3) {
-					continue;
-				}
-				int idx = c.indexOf("=");
-				if (idx == -1) {
-					continue;
-				}
-				String key = c.substring(0, idx);
-				if (!User.USER_SESSION_KEY.equals(key)) {
-					continue;
-				}
-				String val = c.substring(idx+1, c.length()-1);
-				HttpSession session = request.getSession();
-				user = (User) session.getAttribute(val);
-			}
-		}
 		List<Menu> menus = navigatorService.getMenus(user);
 		String callback = request.getParameter("callback");
 		JSONArray arr = new JSONArray();

@@ -62,38 +62,28 @@
 		    		</div>
 				</div>
 				<div class="center-main">
-					<div class="content-dv">
-		              <h2 class="content-dv-title" title="">
-		              <a href="content.do?id=admin164a87c8e68&amp;&amp;op=visit">Linux 中内存 buffer 和 cache 的区别</a>
-		              </h2>
-		               <p class="cl78">
-		             	 作者：
-						<a href="author.do?id=admin" target="_blank">独孤怎会求败 </a>
-						&nbsp;
-						发表时间：2018年8月27日
-		              </p>
-		              <p>
-						     细心的朋友会注意到,当你在Linux下频繁存取文件后,物理内存会很快被用光,当程序结束后,内存不会被正常释放,
-						     而是一直作为caching.这个问题,貌似有不少人在问,不过都没有看到有什么很好解决的办法.那么我来谈谈这个问题。
-					  </p>
-		              <p>
-		              <span class="art_lab fl">
-						
-						<a class="btn color4" href="themes.do?labelId=164a869cd70">AI</a>
-						
-						
-					  </span>
-					  </p>
-					  <p>
-					  <span class="art_Num">
-							浏览(290)&nbsp;
-							评论(0)&nbsp;
-							收藏(0)&nbsp;
-							赞(0)&nbsp;
-					  </span>
-		              <a class="btn btn-default" href="content.do?id=admin164a87c8e68&amp;&amp;op=visit" role="button">阅读全文 »</a>
-		              </p>
-		            </div>
+					<section class="content-dv">
+			              <h2 class="content-dv-title" title="">
+			              <a href="content.do?id=admin164a87c8e68&amp;&amp;op=visit">Linux 中内存 buffer 和 cache 的区别</a>
+			              </h2>
+			              <div class="summary">
+							     细心的朋友会注意到,当你在Linux下频繁存取文件后,物理内存会很快被用光,当程序结束后,内存不会被正常释放,
+							     而是一直作为caching.这个问题,貌似有不少人在问,不过都没有看到有什么很好解决的办法.那么我来谈谈这个问题。
+						  </div>
+						  <dl class="list-userbar">
+						  		<dt><a href="https://www.baidu.com"><img class="user-header" src="../images/myQRCode.jpg" /></a></dt>
+						  		<dd><a href="https://www.baidu.com">独孤怎会求败</a></dd>
+						  		<dt class="interval"></dt>
+						  		<dd class="col-gray">8小时前</dd>
+						  		<dt class="interval"></dt>
+						  		<dd class="tag"><a href="https://www.baidu.com">移动开发</a></dd>
+						  		<dd class="interactive floatR">
+						  			<a class="col-gray" href="https://www.baidu.com" ><span class="read-num">1000</span>阅读</a>
+						  			<div class="interval"></div>
+						  			<a class="col-gray" href="https://www.baidu.com"><span class="common-num">1</span>评价</a>
+						  		</dd>
+						  </dl>
+		            </section>
 					<p>2</p>
 					<p>2</p>
 					<p>2</p>
