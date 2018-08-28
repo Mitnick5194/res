@@ -84,16 +84,9 @@
 
 	<!-- 插件 -->
 	<build>
-	<!-- 	<resources>
-			<resource>
-				<directory>src/main/resource</directory>
-				会将配置文件中${}代替为命令行带入的参数
-				<filtering>true</filtering>
-				<excludes>
-					<exclude>*</exclude>
-				</excludes>
-			</resource>
-		</resources> -->
+		<!-- <resources> <resource> <directory>src/main/resource</directory> 会将配置文件中${}代替为命令行带入的参数 
+			<filtering>true</filtering> <excludes> <exclude>*</exclude> </excludes> </resource> 
+			</resources> -->
 		<plugins>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
@@ -104,7 +97,48 @@
 					<path>/res</path>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+					
+						<id>res-user</id>
+						<goals>
+							<goal>jar</goal>
+						</goals><!-- 打包的后缀 -->
+						<phase>package</phase><!-- life的多个阶段 ，预打包 -->
+						<configuration>
+						<outputDirectory>target/user</outputDirectory>
+						<classifier>res-user</classifier><!--dubbo-service-model-export-->
+							<includes><!-- 引入 路径 -->
+								<include>**/user/**</include>
+								<include>**/navigator/**</include>
+								<include>**/utils/**</include>
+							</includes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>all</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<classifier>all</classifier><!-- ***-all.jar -->
+						<!-- 	<excludes>排除
+								<exclude>**/model/**</exclude>
+							</excludes>
+							<includes>引入
+								<include>**/impl/**</include>
+							</includes> -->
+						</configuration>
+					</execution>
+					
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
 
 </project>
