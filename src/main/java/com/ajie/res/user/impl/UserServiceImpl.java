@@ -31,8 +31,7 @@ import com.ajie.utils.common.Various;
 import com.ajie.utils.common.XmlHelper;
 
 public class UserServiceImpl implements UserService {
-	private static final Logger logger = LoggerFactory
-			.getLogger(UserServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 	/**
 	 * 导航服务
 	 */
@@ -50,8 +49,7 @@ public class UserServiceImpl implements UserService {
 	/**
 	 * 用户数据缓存
 	 */
-	private static Cache<String, User> userCache = new MapCache<String, User>(
-			"user");
+	public static Cache<String, User> userCache = new MapCache<String, User>("user");
 	private Object lock = new Object();
 
 	public void setNavigatorService(NavigatorService navigatorService) {
@@ -80,14 +78,14 @@ public class UserServiceImpl implements UserService {
 				String username = ele.attributeValue("name");
 				String password = ele.attributeValue("password");
 				User user = new XmlUser(id, username, password);
-				//userCache.put(id, user);
+				// userCache.put(id, user);
 				List<Element> propeties = ele.elements("property");
 				// 从配置中获取属性并通过setter设置进去
 				for (Element el : propeties) {
 					String setterName = el.attributeValue("name");
 					String value = el.attributeValue("value");
 					setter = getSetter(setterName);
-					
+
 					if (null == value) {
 						// value为空 ？ 可能多个value 只有权限有传入多个值
 						List<Role> roles = new ArrayList<Role>();
@@ -96,8 +94,7 @@ public class UserServiceImpl implements UserService {
 						if (null != values) {
 							for (Element e : values) {
 								try {
-									int roleId = Various.Hex2Deci(e
-											.getTextTrim());
+									int roleId = Various.Hex2Deci(e.getTextTrim());
 									if (roleTable.size() == 0) {
 										break;
 									}
@@ -127,14 +124,11 @@ public class UserServiceImpl implements UserService {
 			this.users = userList;
 			logger.info("已从配置文件中初始化了用户数据");
 		} catch (IllegalAccessException ex) {
-			logger.error("反射调用setter出错setter:" + setter + " , "
-					+ Various.printTrace(ex));
+			logger.error("反射调用setter出错setter:" + setter + " , " + Various.printTrace(ex));
 		} catch (IllegalArgumentException ex) {
-			logger.error("反射调用setter出错 setter: " + setter + " "
-					+ Various.printTrace(ex));
+			logger.error("反射调用setter出错 setter: " + setter + " " + Various.printTrace(ex));
 		} catch (InvocationTargetException ex) {
-			logger.error("反射调用setter出错 setter:" + setter + " "
-					+ Various.printTrace(ex));
+			logger.error("反射调用setter出错 setter:" + setter + " " + Various.printTrace(ex));
 		}
 	}
 
@@ -153,8 +147,7 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-	protected Method getMethod(Object obj, String methodName,
-			Class<?>... paramType) {
+	protected Method getMethod(Object obj, String methodName, Class<?>... paramType) {
 		if (null == obj) {
 			return null;
 		}
@@ -163,11 +156,9 @@ public class UserServiceImpl implements UserService {
 			Method method = cla.getMethod(methodName, paramType);
 			return method;
 		} catch (NoSuchMethodException e) {
-			logger.error("setter方法不存在:" + methodName + " "
-					+ Various.printTrace(e));
+			logger.error("setter方法不存在:" + methodName + " " + Various.printTrace(e));
 		} catch (SecurityException e) {
-			logger.error("setter方法不存在:" + methodName + " "
-					+ Various.printTrace(e));
+			logger.error("setter方法不存在:" + methodName + " " + Various.printTrace(e));
 		}
 		return null;
 	}
@@ -203,14 +194,13 @@ public class UserServiceImpl implements UserService {
 	 * @return
 	 * @throws UserException
 	 */
-	protected User loginExt(String name, String password){
+	protected User loginExt(String name, String password) {
 		throw new UnsupportedOperationException("未支持服务");
 	}
 
 	@Override
-	public HttpSession putUserIntoSession(User user,
-			HttpServletRequest request, HttpServletResponse response)
-			throws UserException {
+	public HttpSession putUserIntoSession(User user, HttpServletRequest request,
+			HttpServletResponse response) throws UserException {
 		if (null == user) {
 			throw new UserException("user置入session失败，传入user为空");
 		}
