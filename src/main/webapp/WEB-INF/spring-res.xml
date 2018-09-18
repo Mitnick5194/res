@@ -21,6 +21,8 @@
 				<value>/res/login.do</value>
 				<!-- <value>/res/blog/blog.do</value> -->
 				<value>/res/nav.do</value>
+				<value>/res/qrcode.do</value>
+				<value>/res/genqrcode.do</value>
 			</list>
 		</property>
 		<property name="encoding" value="utf-8" />

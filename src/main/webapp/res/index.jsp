@@ -8,5 +8,6 @@
 </head>
 <body>
 	<h1>hello controller parameter: ${msg }</h1>
+	
 </body>
 </html>
