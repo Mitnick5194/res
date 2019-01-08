@@ -219,4 +219,27 @@ public class HomeController {
 		}
 		return image;
 	}
+
+	@RequestMapping
+	String httpclient(HttpServletRequest request, HttpServletResponse response) {
+
+		return PREFIX + "httpclient";
+	}
+
+	@RequestMapping
+	String aj_submitrequest(HttpServletRequest request, HttpServletResponse response) {
+		String url = request.getParameter("url");
+		String param = request.getParameter("params");
+		String cookies = request.getParameter("cookies");
+		String header = request.getParameter("headers");
+		String method = request.getParameter("method");
+		for (int i = 0; i < header.length(); i++) {
+			char charAt = header.charAt(i);
+			if (charAt == 10) {
+				System.out.println("换行");
+			}
+		}
+		return PREFIX + "httpclient";
+	}
+
 }

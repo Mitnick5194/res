@@ -44,7 +44,8 @@
 				iContent.focus();
 				return;
 			}
-			var src =  protocol+"//"+host+"/res/genqrcode.do?content="+content;
+			//var src =  protocol+"//"+host+"/res/genqrcode.do?content="+content;
+			var src =  protocol+"//"+host+"/res/genqrcode.do?content="+encodeURIComponent(content);
 			iQrCode.setAttribute("src" ,src );
 		}
 	})();
