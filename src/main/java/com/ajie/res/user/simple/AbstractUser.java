@@ -1,7 +1,5 @@
 package com.ajie.res.user.simple;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -88,7 +86,7 @@ public abstract class AbstractUser implements User {
 	public String getEmail() {
 		return email;
 	}
-	
+
 	@Override
 	public void setEmail(String email) {
 		this.email = email;
@@ -130,7 +128,29 @@ public abstract class AbstractUser implements User {
 	}
 
 	@Override
-	public abstract List<Role> getRoles();
+	public synchronized void addRole(Role role) {
+		if (null == role) {
+			return;
+		}
+		List<Role> roles = getRoles();
+		roles.add(role);
+		setRoles(roles);
+	}
+
+	@Override
+	public void removeRole(Role role) {
+		if (null == role) {
+			return;
+		}
+		List<Role> roles = getRoles();
+		roles.remove(role);
+	}
+
+	@Override
+	public void removeAllRole() {
+		List<Role> r = getRoles();
+		r.clear();
+	}
 
 	@Override
 	public boolean isContainRole(int roleId) {
@@ -179,9 +199,6 @@ public abstract class AbstractUser implements User {
 	}
 
 	@Override
-	public abstract void setRoles(List<Role> roles);
-
-	@Override
 	public void setPhone(String phone) {
 		throw new UnsupportedOperationException();
 	}
@@ -199,12 +216,6 @@ public abstract class AbstractUser implements User {
 	}
 
 	@Override
-	public abstract boolean checkRole(Role role);
-
-	@Override
-	public abstract boolean checkRole(int roleId);
-
-	@Override
 	public void setHeader(String header) {
 		throw new UnsupportedOperationException();
 
@@ -216,23 +227,7 @@ public abstract class AbstractUser implements User {
 	}
 
 	@Override
-	public abstract boolean vertifyPassword(String password)
-			throws UserException;
-
-	@Override
-	public synchronized void addRole(Role role) {
-		if (null == role) {
-			return;
-		}
-		if (roles == Collections.EMPTY_LIST) {
-			roles = new ArrayList<Role>();
-		}
-		List<Role> roles = getRoles();
-		roles.add(role);
-		setRoles(roles);
-
-	}
-	
+	public abstract boolean vertifyPassword(String password) throws UserException;
 
 	@Override
 	public void updateLastActive() {
@@ -241,8 +236,7 @@ public abstract class AbstractUser implements User {
 	}
 
 	@Override
-	public void changePassword(String oldPassword, String newPassword)
-			throws UserException {
+	public void changePassword(String oldPassword, String newPassword) throws UserException {
 		throw new UnsupportedOperationException();
 	}
 
@@ -251,5 +245,5 @@ public abstract class AbstractUser implements User {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 }

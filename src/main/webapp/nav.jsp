@@ -7,7 +7,8 @@
    <script>
    		 function drawNavigator(obj){
    			var sb = [];
-   			$.each(obj , function(){
+   			var data = obj.data;
+   			$.each(data , function(){
    				sb.push("<a class=btn-nav href="+this.url+" id="+this.id+">"+this.name+"</a>")
    			})
    			$("#iMenus").append(sb.join(""));
@@ -37,6 +38,7 @@
    		}
    		var jsonp = document.createElement("script");
    		jsonp.type = "text/javascript";
-   		jsonp.src=domain + "res/nav.do?callback=drawNavigator&cookies="+document.cookie; 
+//   		jsonp.src=domain + "res/nav.do?callback=drawNavigator&cookies="+document.cookie; 
+   		jsonp.src="http://127.0.0.1:8081/nav/navbar.do?callback=drawNavigator&ut-ooo-nn=XmlUser5016237640858808320000378nufpoqdbsqvqslv11535795540430979"; 
    		document.getElementsByTagName("head")[0].appendChild(jsonp); 
    </script>

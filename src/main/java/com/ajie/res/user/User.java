@@ -131,6 +131,32 @@ public interface User {
 	boolean isRegisterVerification();
 
 	/**
+	 * 设置权限
+	 * 
+	 * @param role
+	 */
+	void setRoles(List<Role> roles);
+
+	/**
+	 * 增加权限
+	 * 
+	 * @param role
+	 */
+	void addRole(Role role);
+
+	/**
+	 * 移除权限
+	 * 
+	 * @param role
+	 */
+	void removeRole(Role role);
+
+	/**
+	 * 移除所有的权限
+	 */
+	void removeAllRole();
+
+	/**
 	 * 获取用户的权限
 	 * 
 	 * @return
@@ -166,8 +192,7 @@ public interface User {
 	 * @param oldPassword
 	 * @param newPassword
 	 */
-	void changePassword(String oldPassword, String newPassword)
-			throws UserException;
+	void changePassword(String oldPassword, String newPassword) throws UserException;
 
 	/**
 	 * 设置姓名
@@ -189,13 +214,6 @@ public interface User {
 	 * @param sex
 	 */
 	void setSex(SexEnum sex);
-
-	/**
-	 * 设置权限
-	 * 
-	 * @param role
-	 */
-	void setRoles(List<Role> roles);
 
 	/**
 	 * 设置手机号
@@ -247,13 +265,6 @@ public interface User {
 	 * @return
 	 */
 	boolean vertifyPassword(String password) throws UserException;
-
-	/**
-	 * 增加权限
-	 * 
-	 * @param role
-	 */
-	void addRole(Role role);
 
 	/**
 	 * 检查是否有权限

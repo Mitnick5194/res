@@ -78,7 +78,20 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-
+		<!-- 解析图片 -->
+	  
+		<!-- 二维码 -->
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+		
+			<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>imaging</artifactId>    
+			<version>2.81.51407</version>
+		</dependency> 
 
 	</dependencies>
 
@@ -97,46 +110,17 @@
 					<path>/res</path>
 				</configuration>
 			</plugin>
-			
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-					
-						<id>res-user</id>
-						<goals>
-							<goal>jar</goal>
-						</goals><!-- 打包的后缀 -->
-						<phase>package</phase><!-- life的多个阶段 ，预打包 -->
-						<configuration>
-						<outputDirectory>target/user</outputDirectory>
-						<classifier>res-user</classifier><!--dubbo-service-model-export-->
-							<includes><!-- 引入 路径 -->
-								<include>**/user/**</include>
-								<include>**/navigator/**</include>
-								<include>**/utils/**</include>
-							</includes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>all</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<classifier>all</classifier><!-- ***-all.jar -->
-						<!-- 	<excludes>排除
-								<exclude>**/model/**</exclude>
-							</excludes>
-							<includes>引入
-								<include>**/impl/**</include>
-							</includes> -->
-						</configuration>
-					</execution>
-					
-				</executions>
-			</plugin>
+
+			<!-- 模块打jar包 -->
+			<!-- <plugin> <artifactId>maven-jar-plugin</artifactId> <executions> <execution> 
+				<id>user-module</id> <goals> <goal>jar</goal> </goals> 打包的后缀 <phase>package</phase> 
+				life的多个阶段 ，预打包 <configuration> <outputDirectory>target/user</outputDirectory> 
+				<classifier>user-module</classifier> <includes> 引入 路径 <include>**/user/**</include> 
+				<include>**/navigator/**</include> </includes> </configuration> </execution> 
+				<execution> <id>all</id> <goals> <goal>jar</goal> </goals> <phase>package</phase> 
+				<configuration> <classifier>all</classifier> ***-all.jar <excludes> 排除 <exclude>**/model/**</exclude> 
+				</excludes> <includes> 引入 <include>**/impl/**</include> </includes> </configuration> 
+				</execution> </executions> </plugin> -->
 		</plugins>
 	</build>
 
