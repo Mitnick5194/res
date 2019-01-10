@@ -102,4 +102,10 @@ public class HomeController {
 		}
 		return null;
 	}
+	
+	@RequestMapping
+	public String test(HttpServletRequest request, HttpServletResponse response){
+		System.out.println("sdfsadfs");
+		return null;
+	}
 }
